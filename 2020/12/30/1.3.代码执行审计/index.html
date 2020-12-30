@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>测试3 - welcome to Lennon&#39;s index</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,"> 
+    <meta name="description" content="人生如梭, 何不留下自己的印记,0x00 简介代码执行也是我们经常遇到的，通常是eval()、assert()，当然还有回调函数比如call_user_func() array_map()，正则函数，动态调用等等，因为程序对传入的,"> 
+    <meta name="author" content="Lennon"> 
+    <link rel="alternative" href="atom.xml" title="welcome to Lennon&#39;s index" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+    
+<link rel="stylesheet" href="/css/diaspora.css">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({
+              google_ad_client: "ca-pub-8691406134231910",
+              enable_page_level_ads: true
+         });
+    </script>
+    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body class="loading">
+    <span id="config-title" style="display:none">welcome to Lennon&#39;s index</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="iconfont icon-home image-icon" href="javascript:;" data-url="http://lennon.work"></a>
+    <div title="播放/暂停" class="iconfont icon-play"></div>
+    <h3 class="subtitle">测试3</h3>
+    <div class="social">
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="iconfont icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">测试3</h1>
+        <div class="stuff">
+            <span>十二月 30, 2020</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <h1 id="0x00-简介"><a href="#0x00-简介" class="headerlink" title="0x00 简介"></a>0x00 简介</h1><p>代码执行也是我们经常遇到的，通常是<code>eval()</code>、<code>assert()</code>，当然还有回调函数比如<code>call_user_func()</code> <code>array_map()</code>，正则函数，动态调用等等，因为程序对传入的参数过滤不严或者没有过滤，导致代码执行，看过我前面写的php的webshell总结的话，你就会发现很多知识是相辅相成的。</p>
+<h1 id="0x01-代码执行"><a href="#0x01-代码执行" class="headerlink" title="0x01 代码执行"></a>0x01 代码执行</h1><p>这里说说eval的命令执行，assert在php7后面移除了。我们来看一个简单的eval代码执行</p>
+<p>test.php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?</span><br><span class="line">$id &#x3D; $_GET[&#39;x&#39;];</span><br><span class="line">eval($id);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test.php?x&#x3D;phpinfo();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>简单到waf以为他是个webshell了，当然我们实际情况肯定遇不到这么简单的，可能需要多重组合利用，这里下面我以一个实例为例</p>
+<h1 id="0x02-实战审计"><a href="#0x02-实战审计" class="headerlink" title="0x02 实战审计"></a>0x02 实战审计</h1><p>这里使用的是zzzphp V1.6.0的一个解析标签过程中引发的代码执行，网上也有其他人的审计思路，这里我是帮朋友复现的时候弄的。</p>
+<p>找个的审计思路是全局搜索eval，当然你也可以搜索其他的能够引发代码执行的函数，但是这个这-1里没有。</p>
+<p>路径：\inc\zzz_template.php</p>
+<p><img src="./img/1.3.1.png" alt="file"></p>
+<p>我们发现eval里面有变量，那么他是可能存在代码执行的</p>
+<p><img src="./img/1.3.2.png" alt="file"></p>
+<p>大概看了下<code>parserIfLabel()</code> 函数没有什么过滤，能够达到我们传入任意参数的目的，到了这里我们就是回溯那里调用了这个函数呗，全局搜索下<code>parserIfLabel()</code>，没搜索到，看了下是个类，所以搜索类名<code>ParserTemplate</code>。</p>
+<p><img src="./img/1.3.3.png" alt="file"></p>
+<p>既然 \admin\save.php 调用了我们这个，不妨看看后台那里有模板操作这个</p>
+<p><img src="./img/1.3.4.png" alt="file"></p>
+<p>当然完全你也可以回溯代码去分析，但是既然有源码能看就看。</p>
+<p><img src="./img/1.3.4.png" alt="file"></p>
+<p>随便找个文件放入我们遵循他正则的代码即可，不过一般我们测试的过程中，尽量选择对目标影响小的文件。</p>
+<p>payload：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;if:assert(phpinfo())&#125;x&#123;end if&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>于此同类的还有苹果cms8.x，都是在解析标签过程中出现的问题，一般看到可以自定义解析标签那么就值得注意，命令执行与此类似，这里就不说了。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        
+                            <li title='0' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                        
+                            <li title='1' data-url='http://link.hhtjim.com/163/425570952.mp3'></li>
+                        
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+		data-enable='true'
+        data-ae='true'
+        data-ci='21049a529d013a30a94c'
+        data-cs='e9ea3d1733f0d9d2b4237edb56f96aa395e4baab'
+        data-r='https://github.com/lennon-liu/MyGitalk'
+        data-o='https://github.com/lennon-liu/'
+        data-a='https://github.com/lennon-liu/'
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/typed.js"></script>
+<script src="/js/diaspora.js"></script>
+
+
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+
+
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</html>
