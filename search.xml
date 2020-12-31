@@ -76,34 +76,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>测试3</title>
-    <url>/2020/12/30/1.3.%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E5%AE%A1%E8%AE%A1/</url>
-    <content><![CDATA[<h1 id="0x00-简介"><a href="#0x00-简介" class="headerlink" title="0x00 简介"></a>0x00 简介</h1><p>代码执行也是我们经常遇到的，通常是<code>eval()</code>、<code>assert()</code>，当然还有回调函数比如<code>call_user_func()</code> <code>array_map()</code>，正则函数，动态调用等等，因为程序对传入的参数过滤不严或者没有过滤，导致代码执行，看过我前面写的php的webshell总结的话，你就会发现很多知识是相辅相成的。</p>
-<h1 id="0x01-代码执行"><a href="#0x01-代码执行" class="headerlink" title="0x01 代码执行"></a>0x01 代码执行</h1><p>这里说说eval的命令执行，assert在php7后面移除了。我们来看一个简单的eval代码执行</p>
-<p>test.php</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?</span><br><span class="line">$id &#x3D; $_GET[&#39;x&#39;];</span><br><span class="line">eval($id);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>payload:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">test.php?x&#x3D;phpinfo();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>简单到waf以为他是个webshell了，当然我们实际情况肯定遇不到这么简单的，可能需要多重组合利用，这里下面我以一个实例为例</p>
-<h1 id="0x02-实战审计"><a href="#0x02-实战审计" class="headerlink" title="0x02 实战审计"></a>0x02 实战审计</h1><p>这里使用的是zzzphp V1.6.0的一个解析标签过程中引发的代码执行，网上也有其他人的审计思路，这里我是帮朋友复现的时候弄的。</p>
-<p>找个的审计思路是全局搜索eval，当然你也可以搜索其他的能够引发代码执行的函数，但是这个这-1里没有。</p>
-<p>路径：\inc\zzz_template.php</p>
-<p><img src="./img/1.3.1.png" alt="file"></p>
-<p>我们发现eval里面有变量，那么他是可能存在代码执行的</p>
-<p><img src="./img/1.3.2.png" alt="file"></p>
-<p>大概看了下<code>parserIfLabel()</code> 函数没有什么过滤，能够达到我们传入任意参数的目的，到了这里我们就是回溯那里调用了这个函数呗，全局搜索下<code>parserIfLabel()</code>，没搜索到，看了下是个类，所以搜索类名<code>ParserTemplate</code>。</p>
-<p><img src="./img/1.3.3.png" alt="file"></p>
-<p>既然 \admin\save.php 调用了我们这个，不妨看看后台那里有模板操作这个</p>
-<p><img src="./img/1.3.4.png" alt="file"></p>
-<p>当然完全你也可以回溯代码去分析，但是既然有源码能看就看。</p>
-<p><img src="./img/1.3.4.png" alt="file"></p>
-<p>随便找个文件放入我们遵循他正则的代码即可，不过一般我们测试的过程中，尽量选择对目标影响小的文件。</p>
-<p>payload：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;if:assert(phpinfo())&#125;x&#123;end if&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>于此同类的还有苹果cms8.x，都是在解析标签过程中出现的问题，一般看到可以自定义解析标签那么就值得注意，命令执行与此类似，这里就不说了。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>测试4</title>
     <url>/2020/12/30/1.4.XSS%E4%B8%8ECSRF%E5%AE%A1%E8%AE%A1/</url>
     <content><![CDATA[<h1 id="0x00-XSS简介"><a href="#0x00-XSS简介" class="headerlink" title="0x00 XSS简介"></a>0x00 XSS简介</h1><p>XSS分为反射型和储存型，一般来说反射型的用处不是很大利用难度相对较高，存储型XSS一般常见于发布评论、留言、收获地址、个人信息等等。对于xss的审计我们一般就在这些点找，有用户控制输入信息输出的地方都是它出现的地方，很多网站的突破口可能就是一个XSS。</p>
@@ -139,6 +111,34 @@
 <p>查看留言板可以看到我们的XMLHTTPRequest已经发包了</p>
 <p><img src="./img/1.4.7.png" alt="file"></p>
 <p>比较典型的例子可以看看 <a href="https://xz.aliyun.com/t/3177">https://xz.aliyun.com/t/3177</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>测试3</title>
+    <url>/2020/12/30/1.3.%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E5%AE%A1%E8%AE%A1/</url>
+    <content><![CDATA[<h1 id="0x00-简介"><a href="#0x00-简介" class="headerlink" title="0x00 简介"></a>0x00 简介</h1><p>代码执行也是我们经常遇到的，通常是<code>eval()</code>、<code>assert()</code>，当然还有回调函数比如<code>call_user_func()</code> <code>array_map()</code>，正则函数，动态调用等等，因为程序对传入的参数过滤不严或者没有过滤，导致代码执行，看过我前面写的php的webshell总结的话，你就会发现很多知识是相辅相成的。</p>
+<h1 id="0x01-代码执行"><a href="#0x01-代码执行" class="headerlink" title="0x01 代码执行"></a>0x01 代码执行</h1><p>这里说说eval的命令执行，assert在php7后面移除了。我们来看一个简单的eval代码执行</p>
+<p>test.php</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;?</span><br><span class="line">$id &#x3D; $_GET[&#39;x&#39;];</span><br><span class="line">eval($id);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>payload:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">test.php?x&#x3D;phpinfo();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>简单到waf以为他是个webshell了，当然我们实际情况肯定遇不到这么简单的，可能需要多重组合利用，这里下面我以一个实例为例</p>
+<h1 id="0x02-实战审计"><a href="#0x02-实战审计" class="headerlink" title="0x02 实战审计"></a>0x02 实战审计</h1><p>这里使用的是zzzphp V1.6.0的一个解析标签过程中引发的代码执行，网上也有其他人的审计思路，这里我是帮朋友复现的时候弄的。</p>
+<p>找个的审计思路是全局搜索eval，当然你也可以搜索其他的能够引发代码执行的函数，但是这个这-1里没有。</p>
+<p>路径：\inc\zzz_template.php</p>
+<p><img src="./img/1.3.1.png" alt="file"></p>
+<p>我们发现eval里面有变量，那么他是可能存在代码执行的</p>
+<p><img src="./img/1.3.2.png" alt="file"></p>
+<p>大概看了下<code>parserIfLabel()</code> 函数没有什么过滤，能够达到我们传入任意参数的目的，到了这里我们就是回溯那里调用了这个函数呗，全局搜索下<code>parserIfLabel()</code>，没搜索到，看了下是个类，所以搜索类名<code>ParserTemplate</code>。</p>
+<p><img src="./img/1.3.3.png" alt="file"></p>
+<p>既然 \admin\save.php 调用了我们这个，不妨看看后台那里有模板操作这个</p>
+<p><img src="./img/1.3.4.png" alt="file"></p>
+<p>当然完全你也可以回溯代码去分析，但是既然有源码能看就看。</p>
+<p><img src="./img/1.3.4.png" alt="file"></p>
+<p>随便找个文件放入我们遵循他正则的代码即可，不过一般我们测试的过程中，尽量选择对目标影响小的文件。</p>
+<p>payload：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;if:assert(phpinfo())&#125;x&#123;end if&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>于此同类的还有苹果cms8.x，都是在解析标签过程中出现的问题，一般看到可以自定义解析标签那么就值得注意，命令执行与此类似，这里就不说了。</p>
 ]]></content>
   </entry>
   <entry>
