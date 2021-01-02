@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://lennon.work/movies/index.html</loc>
+    
+    <lastmod>2021-01-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lennon.work/music/index.html</loc>
+    
+    <lastmod>2021-01-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lennon.work/link/index.html</loc>
+    
+    <lastmod>2021-01-02</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://lennon.work/2021/01/01/Hello%202021!/</loc>
     
     <lastmod>2021-01-01</lastmod>
@@ -74,7 +95,7 @@
 
   <url>
     <loc>http://lennon.work/</loc>
-    <lastmod>2021-01-01</lastmod>
+    <lastmod>2021-01-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -82,14 +103,14 @@
   
   <url>
     <loc>http://lennon.work/tags/%E7%BB%8F%E9%AA%8C/</loc>
-    <lastmod>2021-01-01</lastmod>
+    <lastmod>2021-01-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://lennon.work/tags/2021/</loc>
-    <lastmod>2021-01-01</lastmod>
+    <lastmod>2021-01-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -98,14 +119,14 @@
   
   <url>
     <loc>http://lennon.work/categories/%E5%AE%A1%E8%AE%A1/</loc>
-    <lastmod>2021-01-01</lastmod>
+    <lastmod>2021-01-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://lennon.work/categories/%E6%9D%82%E8%B0%88/</loc>
-    <lastmod>2021-01-01</lastmod>
+    <lastmod>2021-01-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
