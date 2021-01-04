@@ -136,4 +136,47 @@
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
   </entry>
+  <entry>
+    <title>IP反查域名（一）</title>
+    <url>/2021/01/04/search_domain_by_ip/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="域名系统简介"><a href="#域名系统简介" class="headerlink" title="域名系统简介"></a>域名系统简介</h3><h4 id="域名系统"><a href="#域名系统" class="headerlink" title="域名系统"></a>域名系统</h4><p>的英文名称是Domain Name System，缩写是DNS，他是互联网的一项服务，是一种将域名和IP地址相互关联的数据库。让用户方便、快捷使用互联网。</p>
+<hr>
+<h4 id="为啥要引入？"><a href="#为啥要引入？" class="headerlink" title="为啥要引入？"></a>为啥要引入？</h4><ul>
+<li>现实生活中，由于ip数量巨大，记忆困难，输入也极不方便，直接使用ip地址直接访问某一个主机会特别麻烦</li>
+<li>主机ip地址经常更换，更换后需要更新原ip地址库</li>
+</ul>
+<p>为解决以上不方便，特地引入域名这一概念，域名既是给ip地址起别名，用户只需要记录域名，让专门的服务去寻找ip地址</p>
+<hr>
+<h4 id="域名解析"><a href="#域名解析" class="headerlink" title="域名解析"></a>域名解析</h4><p>将域名解析成IP地址的过程即为域名解析，这一工作由DNS服务器完成</p>
+<p><img src="/img/search_domain_by_ip/dns_server.png" alt="dns_server"></p>
+<p>​    </p>
+<p><img src="/img/search_domain_by_ip/pingbaidu.png" alt="pingbaidu"></p>
+<p>通过向dns服务器发送query请求即可查询到想要查询的域名的ip地址</p>
+<hr>
+<h3 id="IP反查域名"><a href="#IP反查域名" class="headerlink" title="IP反查域名"></a>IP反查域名</h3><p>顾名思义 在知道ip地址的情况下，需要查询ip上绑定的域名信息。</p>
+<p><strong>同一个ip可以在不同时间绑定多个域名，但是同一时间只能绑定一个域名</strong></p>
+<p>因此搜集到的域名是具有时效的</p>
+<hr>
+<h4 id="查询方式"><a href="#查询方式" class="headerlink" title="查询方式"></a>查询方式</h4><h5 id="特有网站查询："><a href="#特有网站查询：" class="headerlink" title="特有网站查询："></a>特有网站查询：</h5><p>ip历史解析记录，由<a href="https://ip138.com/">ip138.com</a>维护的历史ip解析记录查询</p>
+<p><a href="https://site.ip138.com/">https://site.ip138.com/</a>（推荐）</p>
+<p><img src="/img/search_domain_by_ip/search.png" alt="search"></p>
+<p><img src="/img/search_domain_by_ip/search2.png" alt="search2"></p>
+<p><a href="https://www.webscan.cc/">https://www.webscan.cc/</a></p>
+<p><a href="https://dns.aizhan.com/">https://dns.aizhan.com/</a></p>
+<hr>
+<h5 id="证书搜集"><a href="#证书搜集" class="headerlink" title="证书搜集"></a>证书搜集</h5><p>如果服务器开启的Web服务端口有配备SSL证书，可以在证书中查看到域名信息。</p>
+<p><img src="/img/search_domain_by_ip/cert.png" alt="cert"></p>
+<!--如果站点使用自签证书，或者证书无效等是看不到域名信息的-->
+
+<hr>
+<h5 id="网站信息收集"><a href="#网站信息收集" class="headerlink" title="网站信息收集"></a>网站信息收集</h5><p>访问站点开放http、https服务，从站点返回信息（响应头、响应体）中可能能获取到域名信息</p>
+<p>下一节将通过代码实现通过证书信息获取到域名信息，敬请期待</p>
+]]></content>
+      <categories>
+        <category>网络安全</category>
+      </categories>
+      <tags>
+        <tag>dns</tag>
+      </tags>
+  </entry>
 </search>
