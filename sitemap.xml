@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://lennon.work/2021/01/11/cpe/</loc>
+    
+    <lastmod>2021-01-11</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lennon.work/2021/01/11/CVE-2020-5511/</loc>
+    
+    <lastmod>2021-01-11</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lennon.work/2021/01/11/CVE-2020-5307&8/</loc>
+    
+    <lastmod>2021-01-11</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://lennon.work/2021/01/04/search_domain_by_ip/</loc>
     
     <lastmod>2021-01-04</lastmod>
@@ -74,7 +95,7 @@
 
   <url>
     <loc>http://lennon.work/</loc>
-    <lastmod>2021-01-04</lastmod>
+    <lastmod>2021-01-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -82,14 +103,28 @@
   
   <url>
     <loc>http://lennon.work/tags/2021/</loc>
-    <lastmod>2021-01-04</lastmod>
+    <lastmod>2021-01-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://lennon.work/tags/dns/</loc>
-    <lastmod>2021-01-04</lastmod>
+    <lastmod>2021-01-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://lennon.work/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/</loc>
+    <lastmod>2021-01-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://lennon.work/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</loc>
+    <lastmod>2021-01-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -98,14 +133,14 @@
   
   <url>
     <loc>http://lennon.work/categories/%E6%9D%82%E8%B0%88/</loc>
-    <lastmod>2021-01-04</lastmod>
+    <lastmod>2021-01-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://lennon.work/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</loc>
-    <lastmod>2021-01-04</lastmod>
+    <lastmod>2021-01-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
