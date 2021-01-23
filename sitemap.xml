@@ -2,21 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://lennon.work/about/index.html</loc>
-    
-    <lastmod>2021-01-23</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://lennon.work/2021/01/18/leetcode66/</loc>
-    
-    <lastmod>2021-01-23</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://lennon.work/2021/01/23/leetocde15/</loc>
+    <loc>https://lennon.work/2021/01/18/leetcode02/</loc>
     
     <lastmod>2021-01-23</lastmod>
     
@@ -37,6 +23,13 @@
   </url>
   
   <url>
+    <loc>https://lennon.work/2021/01/18/leetcode66/</loc>
+    
+    <lastmod>2021-01-23</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://lennon.work/2021/01/23/leetcodee43/</loc>
     
     <lastmod>2021-01-23</lastmod>
@@ -44,7 +37,14 @@
   </url>
   
   <url>
-    <loc>https://lennon.work/2021/01/18/leetcode02/</loc>
+    <loc>https://lennon.work/about/index.html</loc>
+    
+    <lastmod>2021-01-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://lennon.work/2021/01/23/leetocde15/</loc>
     
     <lastmod>2021-01-23</lastmod>
     
@@ -151,14 +151,14 @@
   </url>
   
   <url>
-    <loc>https://lennon.work/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</loc>
+    <loc>https://lennon.work/tags/2021/</loc>
     <lastmod>2021-01-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://lennon.work/tags/2021/</loc>
+    <loc>https://lennon.work/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</loc>
     <lastmod>2021-01-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>

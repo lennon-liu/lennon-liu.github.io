@@ -171,46 +171,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Common Platform Enumeration(CPE)</title>
-    <url>/2021/01/11/cpe/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>CPE全称是Common Platform Enumeration，意思是通用平台枚举项。它是NMAP对识别出来的软件、操作系统和硬件的一种命名方式。</p>
-<h3 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h3><p>cpe:/<part>:<vendor>:<product>:<version>:<update>:<edition>:<language></p>
-<ol>
-<li><p>part表示目标类</p>
-<p>a：应用程序</p>
-<p>h：硬件平台</p>
-<p>o：操作系统</p>
-</li>
-<li><p>vendor表示向量类型；</p>
-</li>
-<li><p>product表示产品名称</p>
-</li>
-<li><p>version表示版本号；</p>
-</li>
-<li><p>update表示更新包；</p>
-</li>
-<li><p>edition表示版本；</p>
-</li>
-<li><p>language表示语言项。</p>
-</li>
-</ol>
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>CPE:/o:microsoft:windows_xp:::x86:,CPE:/o:microsoft:windows_vista:::x86:</p>
-<p>part : o 操作系统</p>
-<p>vendor：microsoft</p>
-<p>product ：windows_xp</p>
-<p>version：</p>
-<p>update：</p>
-<p>edition：x86</p>
-<p>language：</p>
-]]></content>
-      <categories>
-        <category>网络安全</category>
-      </categories>
-      <tags>
-        <tag>基础知识</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello 2021!</title>
     <url>/2021/01/01/Hello%202021!/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h4 id="置顶"><a href="#置顶" class="headerlink" title="置顶"></a>置顶</h4><p>很庆幸你能看到这篇博客</p>
@@ -330,6 +290,46 @@
       </categories>
       <tags>
         <tag>2021</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Common Platform Enumeration(CPE)</title>
+    <url>/2021/01/11/cpe/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>CPE全称是Common Platform Enumeration，意思是通用平台枚举项。它是NMAP对识别出来的软件、操作系统和硬件的一种命名方式。</p>
+<h3 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h3><p>cpe:/<part>:<vendor>:<product>:<version>:<update>:<edition>:<language></p>
+<ol>
+<li><p>part表示目标类</p>
+<p>a：应用程序</p>
+<p>h：硬件平台</p>
+<p>o：操作系统</p>
+</li>
+<li><p>vendor表示向量类型；</p>
+</li>
+<li><p>product表示产品名称</p>
+</li>
+<li><p>version表示版本号；</p>
+</li>
+<li><p>update表示更新包；</p>
+</li>
+<li><p>edition表示版本；</p>
+</li>
+<li><p>language表示语言项。</p>
+</li>
+</ol>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>CPE:/o:microsoft:windows_xp:::x86:,CPE:/o:microsoft:windows_vista:::x86:</p>
+<p>part : o 操作系统</p>
+<p>vendor：microsoft</p>
+<p>product ：windows_xp</p>
+<p>version：</p>
+<p>update：</p>
+<p>edition：x86</p>
+<p>language：</p>
+]]></content>
+      <categories>
+        <category>网络安全</category>
+      </categories>
+      <tags>
+        <tag>基础知识</tag>
       </tags>
   </entry>
   <entry>
