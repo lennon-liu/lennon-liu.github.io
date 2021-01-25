@@ -626,85 +626,6 @@
       </tags>
   </entry>
   <entry>
-    <title>常用工具包汇总一</title>
-    <url>/2021/01/25/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h1 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h1><hr>
-<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><p>神器 置顶</p>
-<p>下载链接 <a href="https://git-scm.com/">https://git-scm.com/</a></p>
-<hr>
-<h3 id="typora"><a href="#typora" class="headerlink" title="typora"></a>typora</h3><p>下载链接 <a href="https://www.typora.io/">https://www.typora.io/</a></p>
-<hr>
-<h3 id="Elasticsearch"><a href="#Elasticsearch" class="headerlink" title="Elasticsearch"></a>Elasticsearch</h3><h4 id="elasticsearch"><a href="#elasticsearch" class="headerlink" title="elasticsearch"></a>elasticsearch</h4><p>官方下载链接 <a href="https://www.elastic.co/cn/downloads/elasticsearch">https://www.elastic.co/cn/downloads/elasticsearch</a></p>
-<p>出于语言驱动原因，尽量使用低于最新版本一点的版本</p>
-<p>jdk安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line">usr_local_dir=/usr/local</span><br><span class="line">java_dir=/usr/local/java </span><br><span class="line">etc_profile=/etc/profile</span><br><span class="line">if [ ! -d $usr_local_dir ]; then</span><br><span class="line">  mkdir $usr_local_dir</span><br><span class="line">fi</span><br><span class="line">if [ ! -d $java_dir ]; then</span><br><span class="line">  mkdir $java_dir</span><br><span class="line">fi</span><br><span class="line">if [ ! -d $etc_profile ]; then</span><br><span class="line">  mkdir $etc_profile</span><br><span class="line">fi</span><br><span class="line">echo &quot;---------安装java环境---------&quot;</span><br><span class="line">tar -zxf  jdk-8u181-linux-x64.tar.gz -C $java_dir</span><br><span class="line">echo &quot;export JAVA_HOME=$java_dir/jdk1.8.0_181&quot; &gt;&gt; $etc_profile</span><br><span class="line">echo &quot;export PATH=\$PATH:\$JAVA_HOME/bin&quot; &gt;&gt; $etc_profile</span><br><span class="line">ln -s $java_dir/jdk1.8.0_181/bin/java /usr/bin/java</span><br><span class="line">echo &quot;---------java环境安装成功---------&quot;</span><br></pre></td></tr></table></figure>
-<p>elasticsearch安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">elk_dir=/home/elk</span><br><span class="line">es_node_name=node-1</span><br><span class="line">es_jvm=12g</span><br><span class="line"></span><br><span class="line">opt_dir=/home/opt</span><br><span class="line">if [ ! -d &quot;$opt_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$opt_dir&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo &quot;--------安装elasticsearch-------&quot;</span><br><span class="line">if [ ! -d &quot;$elk_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$elk_dir&quot;</span><br><span class="line">fi</span><br><span class="line">es_mkdir_cmd=&quot;mkdir $&#123;elk_dir&#125;&quot;</span><br><span class="line">es_config=&quot;$&#123;elk_dir&#125;/elasticsearch-7.9.1/config/&quot;</span><br><span class="line">tar -zxf elasticsearch-7.9.1-linux-x86_64.tar.gz -C $elk_dir</span><br><span class="line">adduser=&quot;adduser elkusr&quot;</span><br><span class="line">chownes=&quot;chown elkusr:elkusr -R $&#123;elk_dir&#125;/elasticsearch-7.9.1&quot;</span><br><span class="line"><span class="meta">$</span><span class="bash">adduser</span></span><br><span class="line"><span class="meta">$</span><span class="bash">chownes</span></span><br><span class="line"></span><br><span class="line">sed -i &quot;s/-Xms2g/-Xms$&#123;es_jvm&#125;/g&quot; $&#123;es_config&#125;jvm.options</span><br><span class="line">sed -i &quot;s/-Xmx2g/-Xmx$&#123;es_jvm&#125;/g&quot; $&#123;es_config&#125;jvm.options</span><br><span class="line">echo &quot;vm.max_map_count=655360&quot; &gt;&gt; /etc/sysctl.conf</span><br><span class="line">sysctl -p</span><br><span class="line"><span class="meta">#</span><span class="bash">该设置需要重启方可生效，解决max file descriptors [4096] <span class="keyword">for</span> elasticsearch process is too low的问题</span></span><br><span class="line">echo &quot;* soft nofile 65536&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo &quot;* hard nofile 131072&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo &quot;* soft nproc 2048&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo &quot;* hard nproc 4096&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">解决max number of threads [1024] <span class="keyword">for</span> user [es] is too low, increase to at least [2048]</span></span><br><span class="line">thread_conf=$(find /etc/security/limits.d/*.conf | head -n 1)</span><br><span class="line">echo &quot; * soft nproc 4096&quot; &gt;&gt; $&#123;thread_conf&#125;</span><br><span class="line">echo &quot; * hard nproc 4096&quot; &gt;&gt; $&#123;thread_conf&#125;</span><br><span class="line">echo &quot;--------elasticsearch安装成功-------&quot;</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="Cerebro"><a href="#Cerebro" class="headerlink" title="Cerebro"></a>Cerebro</h4><p>cerebro需要JDK1.8或者更新的版本予以支持，最简单的方式莫过于使用Docker镜像方式启动服务了。</p>
-<p>安装</p>
-<p>docker镜像安装</p>
-<blockquote>
-<p>docker pull lmenezes/cerebro:0.8.4</p>
-<p>docker run –name cerebro -d -p 9100:9000  lmenezes/cerebro:0.8.4</p>
-</blockquote>
-<p>docker-compose安装</p>
-<p>docker-compose.yml</p>
-<blockquote>
-<p>version: ‘2’<br>services:</p>
-<p>  #cerebro service<br>  cerebro:<br>    image: lmenezes/cerebro:0.8.4<br>    ports:<br>      - “9100:9000”<br>        restart: “no”</p>
-</blockquote>
-<blockquote>
-<p>docker-compose build cerebro<br>docker-compose up cerebro</p>
-</blockquote>
-<hr>
-<h4 id="kibana"><a href="#kibana" class="headerlink" title="kibana"></a>kibana</h4><p>解压后进入 bin目录下</p>
-<p>官方下载链接<a href="https://www.elastic.co/cn/downloads/kibana">https://www.elastic.co/cn/downloads/kibana</a></p>
-<p>版本尽量与elasticsearch版本保持一致</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nohup sudo -u elkusr ./kibana &gt;/dev/null &amp;  #不能在root用户下，安全原因</span><br></pre></td></tr></table></figure>
-<hr>
-<h3 id="mongodb"><a href="#mongodb" class="headerlink" title="mongodb"></a>mongodb</h3><h4 id="mongodb-1"><a href="#mongodb-1" class="headerlink" title="mongodb"></a>mongodb</h4><p>官方下载链接 <a href="https://www.mongodb.com/try/download/community">https://www.mongodb.com/try/download/community</a></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mongodb_dir=/home/mongo</span><br><span class="line"></span><br><span class="line">if [ ! -d &quot;$mongodb_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$mongodb_dir&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span><span class="bash">进入压缩包目录，执行解压操作：</span></span><br><span class="line">tar -zxf mongodb-linux-x86_64-4.0.4.tgz -C /home/opt/mongodb</span><br><span class="line">cd /home/opt/mongodb/ </span><br><span class="line">mv -f mongodb-linux-x86_64-4.0.4/* .   #移动内容至mongodb</span><br><span class="line">mkdir db        #数据库存放目录</span><br><span class="line">mkdir logs       #日志存放目录</span><br><span class="line">touch logs/mongodb.log   #日志文件</span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="NoSQLBooster-for-MongoDB"><a href="#NoSQLBooster-for-MongoDB" class="headerlink" title="NoSQLBooster for MongoDB"></a>NoSQLBooster for MongoDB</h4><p><a href="https://nosqlbooster.com/downloads">https://nosqlbooster.com/downloads</a></p>
-<hr>
-<h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><h4 id="redis-1"><a href="#redis-1" class="headerlink" title="redis"></a>redis</h4><p>下载链接 <a href="https://github.com/redis/redis">https://github.com/redis/redis</a> </p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">opt_dir=/home/</span><br><span class="line">if [ ! -d &quot;$opt_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$opt_dir&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">redis_dir=/home/redis</span><br><span class="line">if [ ! -d &quot;$redis_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$redis_dir&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">tar -zxf redis-5.0.2.tar.gz -C /home/opt/redis</span><br><span class="line">cd /home/opt/redis/redis-5.0.2</span><br><span class="line">rm -rf /softs/redis-5.0.2.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash">执行编译操作：</span></span><br><span class="line">yum -y install gcc gcc-c++ kernel-devel</span><br><span class="line">make</span><br><span class="line"><span class="meta">#</span><span class="bash">安装：</span></span><br><span class="line">make PREFIX=/home/opt/redis install</span><br><span class="line">cp redis.conf /home/opt/redis/bin</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">修改配置：</span></span><br><span class="line"><span class="meta">#</span><span class="bash">vi /home/opt/redis/bin/redis.conf</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> redis以守护进程的方式运行</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> no表示不以守护进程的方式运行(会占用一个终端)</span>  </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">daemonize yes</span></span><br><span class="line">sed -i  &#x27;s/daemonize no/daemonize yes/g&#x27; /home/opt/redis/bin/redis.conf</span><br><span class="line">cd /home/opt/redis/bin</span><br><span class="line">cp redis-cli /usr/bin/</span><br><span class="line">./redis-server redis.conf</span><br><span class="line">cd /</span><br><span class="line">exit 0</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<hr>
-<h4 id="Redis-DeskTop-Manager"><a href="#Redis-DeskTop-Manager" class="headerlink" title="Redis DeskTop Manager"></a>Redis DeskTop Manager</h4><p>下载链接 <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
-<hr>
-<h3 id="wareshark"><a href="#wareshark" class="headerlink" title="wareshark"></a>wareshark</h3><p>下载链接  <a href="https://www.wireshark.org/">https://www.wireshark.org/</a></p>
-<hr>
-<h3 id="postman"><a href="#postman" class="headerlink" title="postman"></a>postman</h3><p>下载链接 <a href="https://www.postman.com/downloads/">https://www.postman.com/downloads/</a></p>
-<hr>
-<h3 id="xshell"><a href="#xshell" class="headerlink" title="xshell"></a>xshell</h3><p>下载链接 <a href="https://xshell.en.softonic.com/">https://xshell.en.softonic.com/</a></p>
-<hr>
-<h3 id="JetBrains大礼包"><a href="#JetBrains大礼包" class="headerlink" title="JetBrains大礼包"></a>JetBrains大礼包</h3><p>goland <a href="https://www.jetbrains.com/go/">https://www.jetbrains.com/go/</a></p>
-<p>pycharm <a href="https://www.jetbrains.com/pycharm/">https://www.jetbrains.com/pycharm/</a></p>
-<p>PhpStorm  <a href="https://www.jetbrains.com/phpstorm/">https://www.jetbrains.com/phpstorm/</a></p>
-<hr>
-<h3 id="vscode"><a href="#vscode" class="headerlink" title="vscode"></a>vscode</h3><p>下载链接 <a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p>
-<hr>
-<h3 id="navicat"><a href="#navicat" class="headerlink" title="navicat"></a>navicat</h3><p>下载链接 <a href="http://www.navicat.com.cn/store/navicat-premium">http://www.navicat.com.cn/store/navicat-premium</a></p>
-<hr>
-<h3 id="sublime"><a href="#sublime" class="headerlink" title="sublime"></a>sublime</h3><p><a href="http://www.sublimetext.com/3">http://www.sublimetext.com/3</a></p>
-<hr>
-<h3 id="visio-amp-processon-com"><a href="#visio-amp-processon-com" class="headerlink" title="visio &amp; processon.com"></a>visio &amp; processon.com</h3><p>绘图软件</p>
-]]></content>
-      <categories>
-        <category>工具包</category>
-      </categories>
-      <tags>
-        <tag>自用</tag>
-        <tag>redis</tag>
-        <tag>elasticsearch</tag>
-        <tag>shell</tag>
-        <tag>mongo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello 2021!</title>
     <url>/2021/01/01/%E6%9D%82%E8%B0%88/Hello%202021!/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h4 id="置顶"><a href="#置顶" class="headerlink" title="置顶"></a>置顶</h4><p>很庆幸你能看到这篇博客</p>
@@ -824,6 +745,85 @@
       </categories>
       <tags>
         <tag>2021</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>常用工具包汇总一</title>
+    <url>/2021/01/25/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h1 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h1><hr>
+<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><p>神器 置顶</p>
+<p>下载链接 <a href="https://git-scm.com/">https://git-scm.com/</a></p>
+<hr>
+<h3 id="typora"><a href="#typora" class="headerlink" title="typora"></a>typora</h3><p>下载链接 <a href="https://www.typora.io/">https://www.typora.io/</a></p>
+<hr>
+<h3 id="Elasticsearch"><a href="#Elasticsearch" class="headerlink" title="Elasticsearch"></a>Elasticsearch</h3><h4 id="elasticsearch"><a href="#elasticsearch" class="headerlink" title="elasticsearch"></a>elasticsearch</h4><p>官方下载链接 <a href="https://www.elastic.co/cn/downloads/elasticsearch">https://www.elastic.co/cn/downloads/elasticsearch</a></p>
+<p>出于语言驱动原因，尽量使用低于最新版本一点的版本</p>
+<p>jdk安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line">usr_local_dir=/usr/local</span><br><span class="line">java_dir=/usr/local/java </span><br><span class="line">etc_profile=/etc/profile</span><br><span class="line">if [ ! -d $usr_local_dir ]; then</span><br><span class="line">  mkdir $usr_local_dir</span><br><span class="line">fi</span><br><span class="line">if [ ! -d $java_dir ]; then</span><br><span class="line">  mkdir $java_dir</span><br><span class="line">fi</span><br><span class="line">if [ ! -d $etc_profile ]; then</span><br><span class="line">  mkdir $etc_profile</span><br><span class="line">fi</span><br><span class="line">echo &quot;---------安装java环境---------&quot;</span><br><span class="line">tar -zxf  jdk-8u181-linux-x64.tar.gz -C $java_dir</span><br><span class="line">echo &quot;export JAVA_HOME=$java_dir/jdk1.8.0_181&quot; &gt;&gt; $etc_profile</span><br><span class="line">echo &quot;export PATH=\$PATH:\$JAVA_HOME/bin&quot; &gt;&gt; $etc_profile</span><br><span class="line">ln -s $java_dir/jdk1.8.0_181/bin/java /usr/bin/java</span><br><span class="line">echo &quot;---------java环境安装成功---------&quot;</span><br></pre></td></tr></table></figure>
+<p>elasticsearch安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">elk_dir=/home/elk</span><br><span class="line">es_node_name=node-1</span><br><span class="line">es_jvm=12g</span><br><span class="line"></span><br><span class="line">opt_dir=/home/opt</span><br><span class="line">if [ ! -d &quot;$opt_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$opt_dir&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo &quot;--------安装elasticsearch-------&quot;</span><br><span class="line">if [ ! -d &quot;$elk_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$elk_dir&quot;</span><br><span class="line">fi</span><br><span class="line">es_mkdir_cmd=&quot;mkdir $&#123;elk_dir&#125;&quot;</span><br><span class="line">es_config=&quot;$&#123;elk_dir&#125;/elasticsearch-7.9.1/config/&quot;</span><br><span class="line">tar -zxf elasticsearch-7.9.1-linux-x86_64.tar.gz -C $elk_dir</span><br><span class="line">adduser=&quot;adduser elkusr&quot;</span><br><span class="line">chownes=&quot;chown elkusr:elkusr -R $&#123;elk_dir&#125;/elasticsearch-7.9.1&quot;</span><br><span class="line"><span class="meta">$</span><span class="bash">adduser</span></span><br><span class="line"><span class="meta">$</span><span class="bash">chownes</span></span><br><span class="line"></span><br><span class="line">sed -i &quot;s/-Xms2g/-Xms$&#123;es_jvm&#125;/g&quot; $&#123;es_config&#125;jvm.options</span><br><span class="line">sed -i &quot;s/-Xmx2g/-Xmx$&#123;es_jvm&#125;/g&quot; $&#123;es_config&#125;jvm.options</span><br><span class="line">echo &quot;vm.max_map_count=655360&quot; &gt;&gt; /etc/sysctl.conf</span><br><span class="line">sysctl -p</span><br><span class="line"><span class="meta">#</span><span class="bash">该设置需要重启方可生效，解决max file descriptors [4096] <span class="keyword">for</span> elasticsearch process is too low的问题</span></span><br><span class="line">echo &quot;* soft nofile 65536&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo &quot;* hard nofile 131072&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo &quot;* soft nproc 2048&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo &quot;* hard nproc 4096&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">解决max number of threads [1024] <span class="keyword">for</span> user [es] is too low, increase to at least [2048]</span></span><br><span class="line">thread_conf=$(find /etc/security/limits.d/*.conf | head -n 1)</span><br><span class="line">echo &quot; * soft nproc 4096&quot; &gt;&gt; $&#123;thread_conf&#125;</span><br><span class="line">echo &quot; * hard nproc 4096&quot; &gt;&gt; $&#123;thread_conf&#125;</span><br><span class="line">echo &quot;--------elasticsearch安装成功-------&quot;</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="Cerebro"><a href="#Cerebro" class="headerlink" title="Cerebro"></a>Cerebro</h4><p>cerebro需要JDK1.8或者更新的版本予以支持，最简单的方式莫过于使用Docker镜像方式启动服务了。</p>
+<p>安装</p>
+<p>docker镜像安装</p>
+<blockquote>
+<p>docker pull lmenezes/cerebro:0.8.4</p>
+<p>docker run –name cerebro -d -p 9100:9000  lmenezes/cerebro:0.8.4</p>
+</blockquote>
+<p>docker-compose安装</p>
+<p>docker-compose.yml</p>
+<blockquote>
+<p>version: ‘2’<br>services:</p>
+<p>  #cerebro service<br>  cerebro:<br>    image: lmenezes/cerebro:0.8.4<br>    ports:<br>      - “9100:9000”<br>        restart: “no”</p>
+</blockquote>
+<blockquote>
+<p>docker-compose build cerebro<br>docker-compose up cerebro</p>
+</blockquote>
+<hr>
+<h4 id="kibana"><a href="#kibana" class="headerlink" title="kibana"></a>kibana</h4><p>解压后进入 bin目录下</p>
+<p>官方下载链接<a href="https://www.elastic.co/cn/downloads/kibana">https://www.elastic.co/cn/downloads/kibana</a></p>
+<p>版本尽量与elasticsearch版本保持一致</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">nohup sudo -u elkusr ./kibana &gt;/dev/null &amp;  #不能在root用户下，安全原因</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="mongodb"><a href="#mongodb" class="headerlink" title="mongodb"></a>mongodb</h3><h4 id="mongodb-1"><a href="#mongodb-1" class="headerlink" title="mongodb"></a>mongodb</h4><p>官方下载链接 <a href="https://www.mongodb.com/try/download/community">https://www.mongodb.com/try/download/community</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mongodb_dir=/home/mongo</span><br><span class="line"></span><br><span class="line">if [ ! -d &quot;$mongodb_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$mongodb_dir&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span><span class="bash">进入压缩包目录，执行解压操作：</span></span><br><span class="line">tar -zxf mongodb-linux-x86_64-4.0.4.tgz -C /home/opt/mongodb</span><br><span class="line">cd /home/opt/mongodb/ </span><br><span class="line">mv -f mongodb-linux-x86_64-4.0.4/* .   #移动内容至mongodb</span><br><span class="line">mkdir db        #数据库存放目录</span><br><span class="line">mkdir logs       #日志存放目录</span><br><span class="line">touch logs/mongodb.log   #日志文件</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="NoSQLBooster-for-MongoDB"><a href="#NoSQLBooster-for-MongoDB" class="headerlink" title="NoSQLBooster for MongoDB"></a>NoSQLBooster for MongoDB</h4><p><a href="https://nosqlbooster.com/downloads">https://nosqlbooster.com/downloads</a></p>
+<hr>
+<h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><h4 id="redis-1"><a href="#redis-1" class="headerlink" title="redis"></a>redis</h4><p>下载链接 <a href="https://github.com/redis/redis">https://github.com/redis/redis</a> </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">opt_dir=/home/</span><br><span class="line">if [ ! -d &quot;$opt_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$opt_dir&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">redis_dir=/home/redis</span><br><span class="line">if [ ! -d &quot;$redis_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$redis_dir&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">tar -zxf redis-5.0.2.tar.gz -C /home/opt/redis</span><br><span class="line">cd /home/opt/redis/redis-5.0.2</span><br><span class="line">rm -rf /softs/redis-5.0.2.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash">执行编译操作：</span></span><br><span class="line">yum -y install gcc gcc-c++ kernel-devel</span><br><span class="line">make</span><br><span class="line"><span class="meta">#</span><span class="bash">安装：</span></span><br><span class="line">make PREFIX=/home/opt/redis install</span><br><span class="line">cp redis.conf /home/opt/redis/bin</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">修改配置：</span></span><br><span class="line"><span class="meta">#</span><span class="bash">vi /home/opt/redis/bin/redis.conf</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> redis以守护进程的方式运行</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> no表示不以守护进程的方式运行(会占用一个终端)</span>  </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">daemonize yes</span></span><br><span class="line">sed -i  &#x27;s/daemonize no/daemonize yes/g&#x27; /home/opt/redis/bin/redis.conf</span><br><span class="line">cd /home/opt/redis/bin</span><br><span class="line">cp redis-cli /usr/bin/</span><br><span class="line">./redis-server redis.conf</span><br><span class="line">cd /</span><br><span class="line">exit 0</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h4 id="Redis-DeskTop-Manager"><a href="#Redis-DeskTop-Manager" class="headerlink" title="Redis DeskTop Manager"></a>Redis DeskTop Manager</h4><p>下载链接 <a href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
+<hr>
+<h3 id="wareshark"><a href="#wareshark" class="headerlink" title="wareshark"></a>wareshark</h3><p>下载链接  <a href="https://www.wireshark.org/">https://www.wireshark.org/</a></p>
+<hr>
+<h3 id="postman"><a href="#postman" class="headerlink" title="postman"></a>postman</h3><p>下载链接 <a href="https://www.postman.com/downloads/">https://www.postman.com/downloads/</a></p>
+<hr>
+<h3 id="xshell"><a href="#xshell" class="headerlink" title="xshell"></a>xshell</h3><p>下载链接 <a href="https://xshell.en.softonic.com/">https://xshell.en.softonic.com/</a></p>
+<hr>
+<h3 id="JetBrains大礼包"><a href="#JetBrains大礼包" class="headerlink" title="JetBrains大礼包"></a>JetBrains大礼包</h3><p>goland <a href="https://www.jetbrains.com/go/">https://www.jetbrains.com/go/</a></p>
+<p>pycharm <a href="https://www.jetbrains.com/pycharm/">https://www.jetbrains.com/pycharm/</a></p>
+<p>PhpStorm  <a href="https://www.jetbrains.com/phpstorm/">https://www.jetbrains.com/phpstorm/</a></p>
+<hr>
+<h3 id="vscode"><a href="#vscode" class="headerlink" title="vscode"></a>vscode</h3><p>下载链接 <a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p>
+<hr>
+<h3 id="navicat"><a href="#navicat" class="headerlink" title="navicat"></a>navicat</h3><p>下载链接 <a href="http://www.navicat.com.cn/store/navicat-premium">http://www.navicat.com.cn/store/navicat-premium</a></p>
+<hr>
+<h3 id="sublime"><a href="#sublime" class="headerlink" title="sublime"></a>sublime</h3><p><a href="http://www.sublimetext.com/3">http://www.sublimetext.com/3</a></p>
+<hr>
+<h3 id="visio-amp-processon-com"><a href="#visio-amp-processon-com" class="headerlink" title="visio &amp; processon.com"></a>visio &amp; processon.com</h3><p>绘图软件</p>
+]]></content>
+      <categories>
+        <category>工具包</category>
+      </categories>
+      <tags>
+        <tag>自用</tag>
+        <tag>redis</tag>
+        <tag>elasticsearch</tag>
+        <tag>shell</tag>
+        <tag>mongo</tag>
       </tags>
   </entry>
   <entry>
