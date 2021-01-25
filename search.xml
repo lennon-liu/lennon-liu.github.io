@@ -29,8 +29,8 @@
         <category>beego源码学习系列</category>
       </categories>
       <tags>
-        <tag>golang</tag>
         <tag>后端</tag>
+        <tag>golang</tag>
         <tag>web框架</tag>
         <tag>mvc架构</tag>
       </tags>
@@ -260,57 +260,6 @@
       </tags>
   </entry>
   <entry>
-    <title>16. 最接近的三数之和</title>
-    <url>/2021/01/24/leetcode/leetcode16/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h3 id="leetcode题库-16-最接近的三数之和"><a href="#leetcode题库-16-最接近的三数之和" class="headerlink" title="leetcode题库 16. 最接近的三数之和"></a>leetcode题库 16. 最接近的三数之和</h3><hr>
-<h4 id="原题信息"><a href="#原题信息" class="headerlink" title="原题信息"></a>原题信息</h4><hr>
-<h5 id="原题链接"><a href="#原题链接" class="headerlink" title="原题链接:"></a>原题链接:</h5><blockquote>
-<p><a href="https://leetcode-cn.com/problems/3sum-closest/">https://leetcode-cn.com/problems/3sum-closest/</a></p>
-</blockquote>
-<hr>
-<h5 id="难度等级"><a href="#难度等级" class="headerlink" title="难度等级"></a>难度等级</h5><blockquote>
-<p>中等</p>
-</blockquote>
-<hr>
-<h5 id="原题描述"><a href="#原题描述" class="headerlink" title="原题描述"></a>原题描述</h5><blockquote>
-<p>给定一个包括 n 个整数的数组 nums 和 一个目标值 target。找出 nums 中的三个整数，使得它们的和与 target 最接近。<br>返回这三个数的和。假定每组输入只存在唯一答案。</p>
-</blockquote>
-<blockquote>
-<p>示例 1：<br>输入：nums = [-1,2,1,-4], target = 1<br> 输出：2<br> 解释：与 target 最接近的和是 2 (-1 + 2 + 1 = 2) 。</p>
-</blockquote>
-<blockquote>
-<p>提示：<br>3 &lt;= nums.length &lt;= 10^3<br>-10^3 &lt;= nums[i] &lt;= 10^3<br>-10^4 &lt;= target &lt;= 10^4</p>
-</blockquote>
-<h4 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h4><blockquote>
-<p>暴力遍历前两个数，在寻找第三个数，直接第三个数常规遍历会超时，因此得加入限制条件才可以。<br>最好先对数组排序,好处是可以在合适的位置跳出循环，减少没有必要的遍历。<br>对排序好的数组，最好使用二分法查找</p>
-</blockquote>
-<hr>
-<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><hr>
-<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">twodivde</span><span class="params">(nums []<span class="keyword">int</span>, target <span class="keyword">int</span>)</span><span class="title">int</span></span>&#123;</span><br><span class="line">	<span class="comment">//fmt.Println(nums)</span></span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(nums)==<span class="number">2</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> math.Abs(<span class="keyword">float64</span>(nums[<span class="number">0</span>]-target))-math.Abs(<span class="keyword">float64</span>(nums[<span class="number">1</span>]-target))&gt;<span class="number">0</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> nums[<span class="number">1</span>]</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> nums[<span class="number">0</span>]</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	length:= <span class="built_in">len</span>(nums)<span class="number">-1</span></span><br><span class="line">	<span class="keyword">if</span> length%<span class="number">2</span>==<span class="number">0</span>&#123;</span><br><span class="line">		length=length/<span class="number">2</span></span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		length=(length<span class="number">-1</span>)/<span class="number">2</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> target == nums[length]&#123;</span><br><span class="line">		<span class="keyword">return</span> target</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span> target &gt; nums[length]&#123;</span><br><span class="line">		<span class="keyword">return</span> twodivde(nums[length:],target)</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> twodivde(nums[:length+<span class="number">1</span>],target)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">threeSumClosest</span><span class="params">(nums []<span class="keyword">int</span>, target <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	result:=<span class="number">0</span></span><br><span class="line">	lastx:=<span class="keyword">float64</span>(<span class="number">10000</span>)</span><br><span class="line"></span><br><span class="line">	ttt:=<span class="number">0</span></span><br><span class="line">	sort.Ints(nums)</span><br><span class="line">	<span class="keyword">for</span> i1 := <span class="number">0</span>;i1&lt;=<span class="built_in">len</span>(nums)<span class="number">-3</span>;i1++&#123;</span><br><span class="line">		lastnum3:=<span class="number">9999</span></span><br><span class="line">		<span class="keyword">for</span> i2:=i1+<span class="number">1</span>;i2&lt;=<span class="built_in">len</span>(nums)<span class="number">-2</span>;i2++&#123;</span><br><span class="line">			num3:=(target-nums[i1])-nums[i2]</span><br><span class="line">			<span class="keyword">if</span> num3&gt;nums[<span class="built_in">len</span>(nums)<span class="number">-1</span>]&#123;</span><br><span class="line">				ttt= nums[<span class="built_in">len</span>(nums)<span class="number">-1</span>]+nums[i2]+nums[i1]</span><br><span class="line">			&#125;<span class="keyword">else</span> <span class="keyword">if</span> num3&lt;nums[i2+<span class="number">1</span>]&#123;</span><br><span class="line">				ttt= nums[i2+<span class="number">1</span>]+nums[i2]+nums[i1]</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				ttt=twodivde(nums,num3)+nums[i2]+nums[i1]</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> ttt-target==<span class="number">0</span>&#123;</span><br><span class="line">				<span class="keyword">return</span> ttt</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> math.Abs(<span class="keyword">float64</span>(ttt-target))-math.Abs(lastx)&lt;<span class="number">0</span>&#123;</span><br><span class="line">				lastx=<span class="keyword">float64</span>(ttt-target)</span><br><span class="line">				result=ttt</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> ttt-target&gt;<span class="number">0</span> &amp;&amp; ttt-lastnum3&gt;<span class="number">0</span>&#123;</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				lastnum3=ttt</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<h5 id="代码链接"><a href="#代码链接" class="headerlink" title="代码链接"></a>代码链接</h5><blockquote>
-<p><a href="https://github.com/lennon-liu/leetcode/tree/main/lennon16">https://github.com/lennon-liu/leetcode/tree/main/lennon16</a></p>
-</blockquote>
-<hr>
-<h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p><img src="/img/lennon16/lennon16.png" alt="lennon2"></p>
-<hr>
-<h4 id="优化与总结"><a href="#优化与总结" class="headerlink" title="优化与总结"></a>优化与总结</h4><blockquote>
-</blockquote>
-<hr>
-<blockquote>
-<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/add-two-numbers">https://leetcode-cn.com/problems/add-two-numbers</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>leetcode</category>
-      </categories>
-      <tags>
-        <tag>中等难度</tag>
-        <tag>golang实现</tag>
-        <tag>字符串</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>15. 三数之和</title>
     <url>/2021/01/23/leetcode/leetcode15/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h3 id="leetcode题库-15-三数之和"><a href="#leetcode题库-15-三数之和" class="headerlink" title="leetcode题库 15. 三数之和"></a>leetcode题库 15. 三数之和</h3><hr>
@@ -372,35 +321,39 @@
       </tags>
   </entry>
   <entry>
-    <title>leetcode题库 35. 搜索插入位置</title>
-    <url>/2021/01/18/leetcode/leetcode35/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h3 id="leetcode题库-35-搜索插入位置"><a href="#leetcode题库-35-搜索插入位置" class="headerlink" title="leetcode题库 35. 搜索插入位置"></a>leetcode题库 35. 搜索插入位置</h3><hr>
+    <title>16. 最接近的三数之和</title>
+    <url>/2021/01/24/leetcode/leetcode16/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h3 id="leetcode题库-16-最接近的三数之和"><a href="#leetcode题库-16-最接近的三数之和" class="headerlink" title="leetcode题库 16. 最接近的三数之和"></a>leetcode题库 16. 最接近的三数之和</h3><hr>
 <h4 id="原题信息"><a href="#原题信息" class="headerlink" title="原题信息"></a>原题信息</h4><hr>
 <h5 id="原题链接"><a href="#原题链接" class="headerlink" title="原题链接:"></a>原题链接:</h5><blockquote>
-<p><a href="https://leetcode-cn.com/problems/search-insert-position/">https://leetcode-cn.com/problems/search-insert-position/</a></p>
+<p><a href="https://leetcode-cn.com/problems/3sum-closest/">https://leetcode-cn.com/problems/3sum-closest/</a></p>
 </blockquote>
 <hr>
 <h5 id="难度等级"><a href="#难度等级" class="headerlink" title="难度等级"></a>难度等级</h5><blockquote>
-<p>简单</p>
+<p>中等</p>
 </blockquote>
 <hr>
 <h5 id="原题描述"><a href="#原题描述" class="headerlink" title="原题描述"></a>原题描述</h5><blockquote>
-<p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
-<p>你可以假设数组中无重复元素。</p>
+<p>给定一个包括 n 个整数的数组 nums 和 一个目标值 target。找出 nums 中的三个整数，使得它们的和与 target 最接近。<br>返回这三个数的和。假定每组输入只存在唯一答案。</p>
 </blockquote>
-<p><img src="/img/lennon35/example.png" alt="example1"></p>
+<blockquote>
+<p>示例 1：<br>输入：nums = [-1,2,1,-4], target = 1<br> 输出：2<br> 解释：与 target 最接近的和是 2 (-1 + 2 + 1 = 2) 。</p>
+</blockquote>
+<blockquote>
+<p>提示：<br>3 &lt;= nums.length &lt;= 10^3<br>-10^3 &lt;= nums[i] &lt;= 10^3<br>-10^4 &lt;= target &lt;= 10^4</p>
+</blockquote>
+<h4 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h4><blockquote>
+<p>暴力遍历前两个数，在寻找第三个数，直接第三个数常规遍历会超时，因此得加入限制条件才可以。<br>最好先对数组排序,好处是可以在合适的位置跳出循环，减少没有必要的遍历。<br>对排序好的数组，最好使用二分法查找</p>
+</blockquote>
 <hr>
 <h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><hr>
-<h5 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h5><blockquote>
-</blockquote>
-<hr>
-<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">searchInsert</span><span class="params">(nums []<span class="keyword">int</span>, target <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> i, n <span class="keyword">int</span></span><br><span class="line">	<span class="keyword">for</span> i, n = <span class="keyword">range</span> nums &#123;</span><br><span class="line">		<span class="keyword">if</span> target &lt;= n &#123;</span><br><span class="line">			<span class="keyword">return</span> i</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> i + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">twodivde</span><span class="params">(nums []<span class="keyword">int</span>, target <span class="keyword">int</span>)</span><span class="title">int</span></span>&#123;</span><br><span class="line">	<span class="comment">//fmt.Println(nums)</span></span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(nums)==<span class="number">2</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> math.Abs(<span class="keyword">float64</span>(nums[<span class="number">0</span>]-target))-math.Abs(<span class="keyword">float64</span>(nums[<span class="number">1</span>]-target))&gt;<span class="number">0</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> nums[<span class="number">1</span>]</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> nums[<span class="number">0</span>]</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	length:= <span class="built_in">len</span>(nums)<span class="number">-1</span></span><br><span class="line">	<span class="keyword">if</span> length%<span class="number">2</span>==<span class="number">0</span>&#123;</span><br><span class="line">		length=length/<span class="number">2</span></span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		length=(length<span class="number">-1</span>)/<span class="number">2</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> target == nums[length]&#123;</span><br><span class="line">		<span class="keyword">return</span> target</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span> target &gt; nums[length]&#123;</span><br><span class="line">		<span class="keyword">return</span> twodivde(nums[length:],target)</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> twodivde(nums[:length+<span class="number">1</span>],target)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">threeSumClosest</span><span class="params">(nums []<span class="keyword">int</span>, target <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	result:=<span class="number">0</span></span><br><span class="line">	lastx:=<span class="keyword">float64</span>(<span class="number">10000</span>)</span><br><span class="line"></span><br><span class="line">	ttt:=<span class="number">0</span></span><br><span class="line">	sort.Ints(nums)</span><br><span class="line">	<span class="keyword">for</span> i1 := <span class="number">0</span>;i1&lt;=<span class="built_in">len</span>(nums)<span class="number">-3</span>;i1++&#123;</span><br><span class="line">		lastnum3:=<span class="number">9999</span></span><br><span class="line">		<span class="keyword">for</span> i2:=i1+<span class="number">1</span>;i2&lt;=<span class="built_in">len</span>(nums)<span class="number">-2</span>;i2++&#123;</span><br><span class="line">			num3:=(target-nums[i1])-nums[i2]</span><br><span class="line">			<span class="keyword">if</span> num3&gt;nums[<span class="built_in">len</span>(nums)<span class="number">-1</span>]&#123;</span><br><span class="line">				ttt= nums[<span class="built_in">len</span>(nums)<span class="number">-1</span>]+nums[i2]+nums[i1]</span><br><span class="line">			&#125;<span class="keyword">else</span> <span class="keyword">if</span> num3&lt;nums[i2+<span class="number">1</span>]&#123;</span><br><span class="line">				ttt= nums[i2+<span class="number">1</span>]+nums[i2]+nums[i1]</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				ttt=twodivde(nums,num3)+nums[i2]+nums[i1]</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> ttt-target==<span class="number">0</span>&#123;</span><br><span class="line">				<span class="keyword">return</span> ttt</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> math.Abs(<span class="keyword">float64</span>(ttt-target))-math.Abs(lastx)&lt;<span class="number">0</span>&#123;</span><br><span class="line">				lastx=<span class="keyword">float64</span>(ttt-target)</span><br><span class="line">				result=ttt</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> ttt-target&gt;<span class="number">0</span> &amp;&amp; ttt-lastnum3&gt;<span class="number">0</span>&#123;</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				lastnum3=ttt</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <hr>
 <h5 id="代码链接"><a href="#代码链接" class="headerlink" title="代码链接"></a>代码链接</h5><blockquote>
-<p><a href="https://github.com/lennon-liu/leetcode/tree/main/lennon35">https://github.com/lennon-liu/leetcode/tree/main/lennon35</a></p>
+<p><a href="https://github.com/lennon-liu/leetcode/tree/main/lennon16">https://github.com/lennon-liu/leetcode/tree/main/lennon16</a></p>
 </blockquote>
 <hr>
-<h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p><img src="/img/lennon35/lennon35.png" alt="lennon2"></p>
+<h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p><img src="/img/lennon16/lennon16.png" alt="lennon2"></p>
 <hr>
 <h4 id="优化与总结"><a href="#优化与总结" class="headerlink" title="优化与总结"></a>优化与总结</h4><blockquote>
 </blockquote>
@@ -413,9 +366,9 @@
         <category>leetcode</category>
       </categories>
       <tags>
+        <tag>中等难度</tag>
         <tag>golang实现</tag>
-        <tag>简单难度</tag>
-        <tag>数组</tag>
+        <tag>字符串</tag>
       </tags>
   </entry>
   <entry>
@@ -466,8 +419,55 @@
       </categories>
       <tags>
         <tag>golang实现</tag>
-        <tag>简单难度</tag>
         <tag>字符串</tag>
+        <tag>简单难度</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>leetcode题库 35. 搜索插入位置</title>
+    <url>/2021/01/18/leetcode/leetcode35/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\css\APlayer.min.css"><script src="\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\js\Meting.min.js"></script><h3 id="leetcode题库-35-搜索插入位置"><a href="#leetcode题库-35-搜索插入位置" class="headerlink" title="leetcode题库 35. 搜索插入位置"></a>leetcode题库 35. 搜索插入位置</h3><hr>
+<h4 id="原题信息"><a href="#原题信息" class="headerlink" title="原题信息"></a>原题信息</h4><hr>
+<h5 id="原题链接"><a href="#原题链接" class="headerlink" title="原题链接:"></a>原题链接:</h5><blockquote>
+<p><a href="https://leetcode-cn.com/problems/search-insert-position/">https://leetcode-cn.com/problems/search-insert-position/</a></p>
+</blockquote>
+<hr>
+<h5 id="难度等级"><a href="#难度等级" class="headerlink" title="难度等级"></a>难度等级</h5><blockquote>
+<p>简单</p>
+</blockquote>
+<hr>
+<h5 id="原题描述"><a href="#原题描述" class="headerlink" title="原题描述"></a>原题描述</h5><blockquote>
+<p>给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。</p>
+<p>你可以假设数组中无重复元素。</p>
+</blockquote>
+<p><img src="/img/lennon35/example.png" alt="example1"></p>
+<hr>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><hr>
+<h5 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h5><blockquote>
+</blockquote>
+<hr>
+<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">searchInsert</span><span class="params">(nums []<span class="keyword">int</span>, target <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> i, n <span class="keyword">int</span></span><br><span class="line">	<span class="keyword">for</span> i, n = <span class="keyword">range</span> nums &#123;</span><br><span class="line">		<span class="keyword">if</span> target &lt;= n &#123;</span><br><span class="line">			<span class="keyword">return</span> i</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> i + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="代码链接"><a href="#代码链接" class="headerlink" title="代码链接"></a>代码链接</h5><blockquote>
+<p><a href="https://github.com/lennon-liu/leetcode/tree/main/lennon35">https://github.com/lennon-liu/leetcode/tree/main/lennon35</a></p>
+</blockquote>
+<hr>
+<h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p><img src="/img/lennon35/lennon35.png" alt="lennon2"></p>
+<hr>
+<h4 id="优化与总结"><a href="#优化与总结" class="headerlink" title="优化与总结"></a>优化与总结</h4><blockquote>
+</blockquote>
+<hr>
+<blockquote>
+<p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/add-two-numbers">https://leetcode-cn.com/problems/add-two-numbers</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>leetcode</category>
+      </categories>
+      <tags>
+        <tag>golang实现</tag>
+        <tag>简单难度</tag>
+        <tag>数组</tag>
       </tags>
   </entry>
   <entry>
@@ -619,8 +619,8 @@
         <category>工具包</category>
       </categories>
       <tags>
-        <tag>工具包</tag>
         <tag>golang</tag>
+        <tag>工具包</tag>
         <tag>调试工具</tag>
         <tag>学习比较</tag>
       </tags>
