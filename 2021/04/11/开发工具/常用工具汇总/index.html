@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>常用工具包汇总一 | --小 · 崧 · 子--</title><meta name="keywords" content="自用,redis,elasticsearch,shell,mongo"><meta name="author" content="Lennon"><meta name="copyright" content="Lennon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="常用工具 git神器 置顶 下载链接 https:&#x2F;&#x2F;git-scm.com&#x2F;  typora下载链接 https:&#x2F;&#x2F;www.typora.io&#x2F;  Elasticsearchelasticsearch官方下载链接 https:&#x2F;&#x2F;www.elastic.co&#x2F;cn&#x2F;downloads&#x2F;elasticsearch 出于语言驱动原因，尽量使用低于最新版本一点的版本 jdk安装 1234567891">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用工具包汇总一">
+<meta property="og:url" content="https://lennon.work/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:site_name" content="--小 · 崧 · 子--">
+<meta property="og:description" content="常用工具 git神器 置顶 下载链接 https:&#x2F;&#x2F;git-scm.com&#x2F;  typora下载链接 https:&#x2F;&#x2F;www.typora.io&#x2F;  Elasticsearchelasticsearch官方下载链接 https:&#x2F;&#x2F;www.elastic.co&#x2F;cn&#x2F;downloads&#x2F;elasticsearch 出于语言驱动原因，尽量使用低于最新版本一点的版本 jdk安装 1234567891">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lennon.work/img/tools/cover.jpg">
+<meta property="article:published_time" content="2021-04-11T14:58:54.399Z">
+<meta property="article:modified_time" content="2021-01-25T11:59:20.279Z">
+<meta property="article:author" content="Lennon">
+<meta property="article:tag" content="自用">
+<meta property="article:tag" content="redis">
+<meta property="article:tag" content="elasticsearch">
+<meta property="article:tag" content="shell">
+<meta property="article:tag" content="mongo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lennon.work/img/tools/cover.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lennon.work/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-01-25 19:59:20'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/css/hideCategory.min.css"><script src="/js/sakura.js"></script><div class="aplayer" data-id="5461740102" data-server="netease" data-type="playlist" data-fixed="true" data-listFolded="false" data-order="random" data-preload="none"></div><link rel="stylesheet" href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css"><script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/meting@1.2.0/dist/Meting.min.js"></script><link rel="stylesheet" href="APlayer.min.css"><div id="aplayer"></div><script src="https://cdn.jsdelivr.net/gh/radium-bit/res@master/live2d/autoload.js" async></script><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js" async></script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="--小 · 崧 · 子--" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/404.jpg'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 归类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友人帐</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-color:transparent;"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">--小 · 崧 · 子--</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 归类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友人帐</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">常用工具包汇总一</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-11T14:58:54.399Z" title="发表于 2021-04-11 22:58:54">2021-04-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-25T11:59:20.279Z" title="更新于 2021-01-25 19:59:20">2021-01-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E5%85%B7%E5%8C%85/">工具包</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">916</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h1><hr>
+<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><p>神器 置顶</p>
+<p>下载链接 <a target="_blank" rel="noopener" href="https://git-scm.com/">https://git-scm.com/</a></p>
+<hr>
+<h3 id="typora"><a href="#typora" class="headerlink" title="typora"></a>typora</h3><p>下载链接 <a target="_blank" rel="noopener" href="https://www.typora.io/">https://www.typora.io/</a></p>
+<hr>
+<h3 id="Elasticsearch"><a href="#Elasticsearch" class="headerlink" title="Elasticsearch"></a>Elasticsearch</h3><h4 id="elasticsearch"><a href="#elasticsearch" class="headerlink" title="elasticsearch"></a>elasticsearch</h4><p>官方下载链接 <a target="_blank" rel="noopener" href="https://www.elastic.co/cn/downloads/elasticsearch">https://www.elastic.co/cn/downloads/elasticsearch</a></p>
+<p>出于语言驱动原因，尽量使用低于最新版本一点的版本</p>
+<p>jdk安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line">usr_local_dir=/usr/local</span><br><span class="line">java_dir=/usr/local/java </span><br><span class="line">etc_profile=/etc/profile</span><br><span class="line">if [ ! -d $usr_local_dir ]; then</span><br><span class="line">  mkdir $usr_local_dir</span><br><span class="line">fi</span><br><span class="line">if [ ! -d $java_dir ]; then</span><br><span class="line">  mkdir $java_dir</span><br><span class="line">fi</span><br><span class="line">if [ ! -d $etc_profile ]; then</span><br><span class="line">  mkdir $etc_profile</span><br><span class="line">fi</span><br><span class="line">echo &quot;---------安装java环境---------&quot;</span><br><span class="line">tar -zxf  jdk-8u181-linux-x64.tar.gz -C $java_dir</span><br><span class="line">echo &quot;export JAVA_HOME=$java_dir/jdk1.8.0_181&quot; &gt;&gt; $etc_profile</span><br><span class="line">echo &quot;export PATH=\$PATH:\$JAVA_HOME/bin&quot; &gt;&gt; $etc_profile</span><br><span class="line">ln -s $java_dir/jdk1.8.0_181/bin/java /usr/bin/java</span><br><span class="line">echo &quot;---------java环境安装成功---------&quot;</span><br></pre></td></tr></table></figure>
+
+<p>elasticsearch安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">elk_dir=/home/elk</span><br><span class="line">es_node_name=node-1</span><br><span class="line">es_jvm=12g</span><br><span class="line"></span><br><span class="line">opt_dir=/home/opt</span><br><span class="line">if [ ! -d &quot;$opt_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$opt_dir&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo &quot;--------安装elasticsearch-------&quot;</span><br><span class="line">if [ ! -d &quot;$elk_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$elk_dir&quot;</span><br><span class="line">fi</span><br><span class="line">es_mkdir_cmd=&quot;mkdir $&#123;elk_dir&#125;&quot;</span><br><span class="line">es_config=&quot;$&#123;elk_dir&#125;/elasticsearch-7.9.1/config/&quot;</span><br><span class="line">tar -zxf elasticsearch-7.9.1-linux-x86_64.tar.gz -C $elk_dir</span><br><span class="line">adduser=&quot;adduser elkusr&quot;</span><br><span class="line">chownes=&quot;chown elkusr:elkusr -R $&#123;elk_dir&#125;/elasticsearch-7.9.1&quot;</span><br><span class="line"><span class="meta">$</span><span class="bash">adduser</span></span><br><span class="line"><span class="meta">$</span><span class="bash">chownes</span></span><br><span class="line"></span><br><span class="line">sed -i &quot;s/-Xms2g/-Xms$&#123;es_jvm&#125;/g&quot; $&#123;es_config&#125;jvm.options</span><br><span class="line">sed -i &quot;s/-Xmx2g/-Xmx$&#123;es_jvm&#125;/g&quot; $&#123;es_config&#125;jvm.options</span><br><span class="line">echo &quot;vm.max_map_count=655360&quot; &gt;&gt; /etc/sysctl.conf</span><br><span class="line">sysctl -p</span><br><span class="line"><span class="meta">#</span><span class="bash">该设置需要重启方可生效，解决max file descriptors [4096] <span class="keyword">for</span> elasticsearch process is too low的问题</span></span><br><span class="line">echo &quot;* soft nofile 65536&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo &quot;* hard nofile 131072&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo &quot;* soft nproc 2048&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line">echo &quot;* hard nproc 4096&quot; &gt;&gt; /etc/security/limits.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">解决max number of threads [1024] <span class="keyword">for</span> user [es] is too low, increase to at least [2048]</span></span><br><span class="line">thread_conf=$(find /etc/security/limits.d/*.conf | head -n 1)</span><br><span class="line">echo &quot; * soft nproc 4096&quot; &gt;&gt; $&#123;thread_conf&#125;</span><br><span class="line">echo &quot; * hard nproc 4096&quot; &gt;&gt; $&#123;thread_conf&#125;</span><br><span class="line">echo &quot;--------elasticsearch安装成功-------&quot;</span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="Cerebro"><a href="#Cerebro" class="headerlink" title="Cerebro"></a>Cerebro</h4><p>cerebro需要JDK1.8或者更新的版本予以支持，最简单的方式莫过于使用Docker镜像方式启动服务了。</p>
+<p>安装</p>
+<p>docker镜像安装</p>
+<blockquote>
+<p>docker pull lmenezes/cerebro:0.8.4</p>
+<p>docker run –name cerebro -d -p 9100:9000  lmenezes/cerebro:0.8.4</p>
+</blockquote>
+<p>docker-compose安装</p>
+<p>docker-compose.yml</p>
+<blockquote>
+<p>version: ‘2’<br>services:</p>
+<p>  #cerebro service<br>  cerebro:<br>    image: lmenezes/cerebro:0.8.4<br>    ports:<br>      - “9100:9000”<br>        restart: “no”</p>
+</blockquote>
+<blockquote>
+<p>docker-compose build cerebro<br>docker-compose up cerebro</p>
+</blockquote>
+<hr>
+<h4 id="kibana"><a href="#kibana" class="headerlink" title="kibana"></a>kibana</h4><p>解压后进入 bin目录下</p>
+<p>官方下载链接<a target="_blank" rel="noopener" href="https://www.elastic.co/cn/downloads/kibana">https://www.elastic.co/cn/downloads/kibana</a></p>
+<p>版本尽量与elasticsearch版本保持一致</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sudo -u elkusr ./kibana &gt;/dev/null &amp;  #不能在root用户下，安全原因</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="mongodb"><a href="#mongodb" class="headerlink" title="mongodb"></a>mongodb</h3><h4 id="mongodb-1"><a href="#mongodb-1" class="headerlink" title="mongodb"></a>mongodb</h4><p>官方下载链接 <a target="_blank" rel="noopener" href="https://www.mongodb.com/try/download/community">https://www.mongodb.com/try/download/community</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mongodb_dir=/home/mongo</span><br><span class="line"></span><br><span class="line">if [ ! -d &quot;$mongodb_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$mongodb_dir&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span><span class="bash">进入压缩包目录，执行解压操作：</span></span><br><span class="line">tar -zxf mongodb-linux-x86_64-4.0.4.tgz -C /home/opt/mongodb</span><br><span class="line">cd /home/opt/mongodb/ </span><br><span class="line">mv -f mongodb-linux-x86_64-4.0.4/* .   #移动内容至mongodb</span><br><span class="line">mkdir db        #数据库存放目录</span><br><span class="line">mkdir logs       #日志存放目录</span><br><span class="line">touch logs/mongodb.log   #日志文件</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="NoSQLBooster-for-MongoDB"><a href="#NoSQLBooster-for-MongoDB" class="headerlink" title="NoSQLBooster for MongoDB"></a>NoSQLBooster for MongoDB</h4><p><a target="_blank" rel="noopener" href="https://nosqlbooster.com/downloads">https://nosqlbooster.com/downloads</a></p>
+<hr>
+<h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><h4 id="redis-1"><a href="#redis-1" class="headerlink" title="redis"></a>redis</h4><p>下载链接 <a target="_blank" rel="noopener" href="https://github.com/redis/redis">https://github.com/redis/redis</a> </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">opt_dir=/home/</span><br><span class="line">if [ ! -d &quot;$opt_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$opt_dir&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">redis_dir=/home/redis</span><br><span class="line">if [ ! -d &quot;$redis_dir&quot; ]; then</span><br><span class="line">  mkdir &quot;$redis_dir&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">tar -zxf redis-5.0.2.tar.gz -C /home/opt/redis</span><br><span class="line">cd /home/opt/redis/redis-5.0.2</span><br><span class="line">rm -rf /softs/redis-5.0.2.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash">执行编译操作：</span></span><br><span class="line">yum -y install gcc gcc-c++ kernel-devel</span><br><span class="line">make</span><br><span class="line"><span class="meta">#</span><span class="bash">安装：</span></span><br><span class="line">make PREFIX=/home/opt/redis install</span><br><span class="line">cp redis.conf /home/opt/redis/bin</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">修改配置：</span></span><br><span class="line"><span class="meta">#</span><span class="bash">vi /home/opt/redis/bin/redis.conf</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> redis以守护进程的方式运行</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> no表示不以守护进程的方式运行(会占用一个终端)</span>  </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">daemonize yes</span></span><br><span class="line">sed -i  &#x27;s/daemonize no/daemonize yes/g&#x27; /home/opt/redis/bin/redis.conf</span><br><span class="line">cd /home/opt/redis/bin</span><br><span class="line">cp redis-cli /usr/bin/</span><br><span class="line">./redis-server redis.conf</span><br><span class="line">cd /</span><br><span class="line">exit 0</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h4 id="Redis-DeskTop-Manager"><a href="#Redis-DeskTop-Manager" class="headerlink" title="Redis DeskTop Manager"></a>Redis DeskTop Manager</h4><p>下载链接 <a target="_blank" rel="noopener" href="https://github.com/qishibo/AnotherRedisDesktopManager/releases">https://github.com/qishibo/AnotherRedisDesktopManager/releases</a></p>
+<hr>
+<h3 id="wareshark"><a href="#wareshark" class="headerlink" title="wareshark"></a>wareshark</h3><p>下载链接  <a target="_blank" rel="noopener" href="https://www.wireshark.org/">https://www.wireshark.org/</a></p>
+<hr>
+<h3 id="postman"><a href="#postman" class="headerlink" title="postman"></a>postman</h3><p>下载链接 <a target="_blank" rel="noopener" href="https://www.postman.com/downloads/">https://www.postman.com/downloads/</a></p>
+<hr>
+<h3 id="xshell"><a href="#xshell" class="headerlink" title="xshell"></a>xshell</h3><p>下载链接 <a target="_blank" rel="noopener" href="https://xshell.en.softonic.com/">https://xshell.en.softonic.com/</a></p>
+<hr>
+<h3 id="JetBrains大礼包"><a href="#JetBrains大礼包" class="headerlink" title="JetBrains大礼包"></a>JetBrains大礼包</h3><p>goland <a target="_blank" rel="noopener" href="https://www.jetbrains.com/go/">https://www.jetbrains.com/go/</a></p>
+<p>pycharm <a target="_blank" rel="noopener" href="https://www.jetbrains.com/pycharm/">https://www.jetbrains.com/pycharm/</a></p>
+<p>PhpStorm  <a target="_blank" rel="noopener" href="https://www.jetbrains.com/phpstorm/">https://www.jetbrains.com/phpstorm/</a></p>
+<hr>
+<h3 id="vscode"><a href="#vscode" class="headerlink" title="vscode"></a>vscode</h3><p>下载链接 <a target="_blank" rel="noopener" href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p>
+<hr>
+<h3 id="navicat"><a href="#navicat" class="headerlink" title="navicat"></a>navicat</h3><p>下载链接 <a target="_blank" rel="noopener" href="http://www.navicat.com.cn/store/navicat-premium">http://www.navicat.com.cn/store/navicat-premium</a></p>
+<hr>
+<h3 id="sublime"><a href="#sublime" class="headerlink" title="sublime"></a>sublime</h3><p><a target="_blank" rel="noopener" href="http://www.sublimetext.com/3">http://www.sublimetext.com/3</a></p>
+<hr>
+<h3 id="visio-amp-processon-com"><a href="#visio-amp-processon-com" class="headerlink" title="visio &amp; processon.com"></a>visio &amp; processon.com</h3><p>绘图软件</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Lennon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lennon.work/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/">https://lennon.work/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lennon.work" target="_blank">--小 · 崧 · 子--</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%87%AA%E7%94%A8/">自用</a><a class="post-meta__tags" href="/tags/redis/">redis</a><a class="post-meta__tags" href="/tags/elasticsearch/">elasticsearch</a><a class="post-meta__tags" href="/tags/shell/">shell</a><a class="post-meta__tags" href="/tags/mongo/">mongo</a></div><div class="post_share"><div class="social-share" data-image="/img/tools/cover.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/11/%E6%9D%82%E8%B0%88/Hello%202021!/"><img class="prev-cover" src="/img/20210101/2021.png" onerror="onerror=null;src='/img/9s2b.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Hello 2021!</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85%E6%B1%87%E6%80%BB/"><img class="next-cover" src="/img/tools/cover.jpg" onerror="onerror=null;src='/img/9s2b.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">常用工具包汇总二</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="avatar"/><div class="author-info__name">Lennon</div><div class="author-info__description">每天成长一点点</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/lennon-liu"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">2021新年快乐</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="toc-number">1.</span> <span class="toc-text">常用工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#git"><span class="toc-number">1.0.1.</span> <span class="toc-text">git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#typora"><span class="toc-number">1.0.2.</span> <span class="toc-text">typora</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Elasticsearch"><span class="toc-number">1.0.3.</span> <span class="toc-text">Elasticsearch</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#elasticsearch"><span class="toc-number">1.0.3.1.</span> <span class="toc-text">elasticsearch</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Cerebro"><span class="toc-number">1.0.3.2.</span> <span class="toc-text">Cerebro</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#kibana"><span class="toc-number">1.0.3.3.</span> <span class="toc-text">kibana</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mongodb"><span class="toc-number">1.0.4.</span> <span class="toc-text">mongodb</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#mongodb-1"><span class="toc-number">1.0.4.1.</span> <span class="toc-text">mongodb</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NoSQLBooster-for-MongoDB"><span class="toc-number">1.0.4.2.</span> <span class="toc-text">NoSQLBooster for MongoDB</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis"><span class="toc-number">1.0.5.</span> <span class="toc-text">redis</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#redis-1"><span class="toc-number">1.0.5.1.</span> <span class="toc-text">redis</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Redis-DeskTop-Manager"><span class="toc-number">1.0.5.2.</span> <span class="toc-text">Redis DeskTop Manager</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wareshark"><span class="toc-number">1.0.6.</span> <span class="toc-text">wareshark</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#postman"><span class="toc-number">1.0.7.</span> <span class="toc-text">postman</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xshell"><span class="toc-number">1.0.8.</span> <span class="toc-text">xshell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JetBrains%E5%A4%A7%E7%A4%BC%E5%8C%85"><span class="toc-number">1.0.9.</span> <span class="toc-text">JetBrains大礼包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vscode"><span class="toc-number">1.0.10.</span> <span class="toc-text">vscode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#navicat"><span class="toc-number">1.0.11.</span> <span class="toc-text">navicat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sublime"><span class="toc-number">1.0.12.</span> <span class="toc-text">sublime</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#visio-amp-processon-com"><span class="toc-number">1.0.13.</span> <span class="toc-text">visio &amp; processon.com</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/04/11/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/search_domain_by_ip/" title="IP反查域名（一）"><img src="/img/search_domain_by_ip/cover.png" onerror="this.onerror=null;this.src='/img/9s2b.jpg'" alt="IP反查域名（一）"/></a><div class="content"><a class="title" href="/2021/04/11/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/search_domain_by_ip/" title="IP反查域名（一）">IP反查域名（一）</a><time datetime="2021-04-11T14:58:54.406Z" title="发表于 2021-04-11 22:58:54">2021-04-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/11/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/cpe/" title="Common Platform Enumeration(CPE)"><img src="/img/CPE/cover.png" onerror="this.onerror=null;this.src='/img/9s2b.jpg'" alt="Common Platform Enumeration(CPE)"/></a><div class="content"><a class="title" href="/2021/04/11/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/cpe/" title="Common Platform Enumeration(CPE)">Common Platform Enumeration(CPE)</a><time datetime="2021-04-11T14:58:54.405Z" title="发表于 2021-04-11 22:58:54">2021-04-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/11/%E6%9D%82%E8%B0%88/Hello%202021!/" title="Hello 2021!"><img src="/img/20210101/2021.png" onerror="this.onerror=null;this.src='/img/9s2b.jpg'" alt="Hello 2021!"/></a><div class="content"><a class="title" href="/2021/04/11/%E6%9D%82%E8%B0%88/Hello%202021!/" title="Hello 2021!">Hello 2021!</a><time datetime="2021-04-11T14:58:54.402Z" title="发表于 2021-04-11 22:58:54">2021-04-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="常用工具包汇总一"><img src="/img/tools/cover.jpg" onerror="this.onerror=null;this.src='/img/9s2b.jpg'" alt="常用工具包汇总一"/></a><div class="content"><a class="title" href="/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="常用工具包汇总一">常用工具包汇总一</a><time datetime="2021-04-11T14:58:54.399Z" title="发表于 2021-04-11 22:58:54">2021-04-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85%E6%B1%87%E6%80%BB/" title="常用工具包汇总二"><img src="/img/tools/cover.jpg" onerror="this.onerror=null;this.src='/img/9s2b.jpg'" alt="常用工具包汇总二"/></a><div class="content"><a class="title" href="/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85%E6%B1%87%E6%80%BB/" title="常用工具包汇总二">常用工具包汇总二</a><time datetime="2021-04-11T14:58:54.398Z" title="发表于 2021-04-11 22:58:54">2021-04-11</time></div></div></div></div></div></div></main><footer id="footer" style="background-color: transparent;"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Lennon</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/hideCategory.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="undefined" data-text="富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善" data-fontsize="15px" data-random="undefined" async="async"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.8},"log":false});</script></body></html>

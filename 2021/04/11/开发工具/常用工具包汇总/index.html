@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>常用工具包汇总二 | --小 · 崧 · 子--</title><meta name="keywords" content="golang,工具包,调试工具,学习比较"><meta name="author" content="Lennon"><meta name="copyright" content="Lennon"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="一. 开发工具1)sql2go用于将 sql 语句转换为 golang 的 struct. 使用 ddl 语句即可。例如对于创建表的语句: show create table xxx. 将输出的语句，直接粘贴进去就行。http:&#x2F;&#x2F;stming.cn&#x2F;tool&#x2F;sql2go.html 2)toml2go用于将编码后的 toml 文本转换问 golang 的 struct.https:&#x2F;&#x2F;xuri.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用工具包汇总二">
+<meta property="og:url" content="https://lennon.work/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:site_name" content="--小 · 崧 · 子--">
+<meta property="og:description" content="一. 开发工具1)sql2go用于将 sql 语句转换为 golang 的 struct. 使用 ddl 语句即可。例如对于创建表的语句: show create table xxx. 将输出的语句，直接粘贴进去就行。http:&#x2F;&#x2F;stming.cn&#x2F;tool&#x2F;sql2go.html 2)toml2go用于将编码后的 toml 文本转换问 golang 的 struct.https:&#x2F;&#x2F;xuri.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lennon.work/img/tools/cover.jpg">
+<meta property="article:published_time" content="2021-04-11T14:58:54.398Z">
+<meta property="article:modified_time" content="2021-01-25T12:01:35.301Z">
+<meta property="article:author" content="Lennon">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="工具包">
+<meta property="article:tag" content="调试工具">
+<meta property="article:tag" content="学习比较">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lennon.work/img/tools/cover.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lennon.work/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85%E6%B1%87%E6%80%BB/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-01-25 20:01:35'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/css/hideCategory.min.css"><script src="/js/sakura.js"></script><div class="aplayer" data-id="5461740102" data-server="netease" data-type="playlist" data-fixed="true" data-listFolded="false" data-order="random" data-preload="none"></div><link rel="stylesheet" href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css"><script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/meting@1.2.0/dist/Meting.min.js"></script><link rel="stylesheet" href="APlayer.min.css"><div id="aplayer"></div><script src="https://cdn.jsdelivr.net/gh/radium-bit/res@master/live2d/autoload.js" async></script><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js" async></script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="--小 · 崧 · 子--" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/404.jpg'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 归类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友人帐</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-color:transparent;"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">--小 · 崧 · 子--</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 归类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友人帐</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 其他</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">常用工具包汇总二</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-11T14:58:54.398Z" title="发表于 2021-04-11 22:58:54">2021-04-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-25T12:01:35.301Z" title="更新于 2021-01-25 20:01:35">2021-01-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E5%85%B7%E5%8C%85/">工具包</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="一-开发工具"><a href="#一-开发工具" class="headerlink" title="一. 开发工具"></a><strong>一. 开发工具</strong></h2><p><strong>1)sql2go</strong><br>用于将 sql 语句转换为 golang 的 struct. 使用 ddl 语句即可。<br>例如对于创建表的语句: show create table xxx. 将输出的语句，直接粘贴进去就行。<br><a target="_blank" rel="noopener" href="http://stming.cn/tool/sql2go.html">http://stming.cn/tool/sql2go.html</a></p>
+<p><strong>2)toml2go</strong><br>用于将编码后的 toml 文本转换问 golang 的 struct.<br><a target="_blank" rel="noopener" href="https://xuri.me/toml-to-go/">https://xuri.me/toml-to-go/</a></p>
+<p><strong>3)curl2go</strong><br>用来将 curl 命令转化为具体的 golang 代码.<br><a target="_blank" rel="noopener" href="https://mholt.github.io/curl-to-go/">https://mholt.github.io/curl-to-go/</a></p>
+<p><strong>4)json2go</strong><br>用于将 json 文本转换为 struct.<br><a target="_blank" rel="noopener" href="https://mholt.github.io/json-to-go/">https://mholt.github.io/json-to-go/</a></p>
+<p><strong>5)mysql 转 ES 工具</strong><br><a target="_blank" rel="noopener" href="http://www.ischoolbar.com/EsParser/">http://www.ischoolbar.com/EsParser/</a></p>
+<p><strong>6)golang</strong><br>模拟模板的工具，在支持泛型之前，可以考虑使用。<br><a target="_blank" rel="noopener" href="https://github.com/cheekybits/genny">https://github.com/cheekybits/genny</a></p>
+<p><strong>7)查看某一个库的依赖情况，类似于 go list 功能</strong><br><a target="_blank" rel="noopener" href="https://github.com/KyleBanks/depth">https://github.com/KyleBanks/depth</a></p>
+<p><strong>8)一个好用的文件压缩和解压工具，集成了 zip，tar 等多种功能，主要还有跨平台。</strong><br><a target="_blank" rel="noopener" href="https://github.com/mholt/archiver">https://github.com/mholt/archiver</a></p>
+<p><strong>9)go 内置命令</strong><br>go list 可以查看某一个包的依赖关系.<br>go vet 可以检查代码不符合 golang 规范的地方。</p>
+<p><strong>10)热编译工具</strong><br><a target="_blank" rel="noopener" href="https://github.com/silenceper/gowatch">https://github.com/silenceper/gowatch</a></p>
+<p><strong>11)revive</strong><br>golang 代码质量检测工具<br><a target="_blank" rel="noopener" href="https://github.com/mgechev/revive">https://github.com/mgechev/revive</a></p>
+<p><strong>12)Go Callvis</strong><br>golang 的代码调用链图工具<br><a target="_blank" rel="noopener" href="https://github.com/TrueFurby/go-callvis">https://github.com/TrueFurby/go-callvis</a></p>
+<p><strong>13)Realize</strong><br>开发流程改进工具<br><a target="_blank" rel="noopener" href="https://github.com/oxequa/realize">https://github.com/oxequa/realize</a></p>
+<p><strong>14)Gotests</strong><br>自动生成测试用例工具<br><a target="_blank" rel="noopener" href="https://github.com/cweill/gotests">https://github.com/cweill/gotests</a></p>
+<h2 id="二-调试工具"><a href="#二-调试工具" class="headerlink" title="二.调试工具"></a><strong>二.调试工具</strong></h2><p><strong>1)perf</strong><br>代理工具，支持内存，cpu，堆栈查看，并支持火焰图.<br>perf 工具和 go-torch 工具，快捷定位程序问题.<br><a target="_blank" rel="noopener" href="https://github.com/uber-archive/go-torch">https://github.com/uber-archive/go-torch</a><br><a target="_blank" rel="noopener" href="https://github.com/google/gops">https://github.com/google/gops</a></p>
+<p><strong>2)dlv 远程调试</strong><br>基于 goland+dlv 可以实现远程调式的能力.<br><a target="_blank" rel="noopener" href="https://github.com/go-delve/delve">https://github.com/go-delve/delve</a><br>提供了对 golang 原生的支持，相比 gdb 调试，简单太多。</p>
+<p><strong>3)网络代理工具</strong><br>goproxy 代理，支持多种协议，支持 ssh 穿透和 kcp 协议.<br><a target="_blank" rel="noopener" href="https://github.com/snail007/goproxy">https://github.com/snail007/goproxy</a></p>
+<p><strong>4)抓包工具</strong><br>go-sniffer 工具，可扩展的抓包工具，可以开发自定义协议的工具包. 现在只支持了 http，mysql，redis，mongodb.<br>基于这个工具，我们开发了 qapp 协议的抓包。<br><a target="_blank" rel="noopener" href="https://github.com/40t/go-sniffer">https://github.com/40t/go-sniffer</a></p>
+<p><strong>5)反向代理工具，快捷开放内网端口供外部使用。</strong><br>ngrok 可以让内网服务外部调用<br><a target="_blank" rel="noopener" href="https://ngrok.com/">https://ngrok.com/</a><br><a target="_blank" rel="noopener" href="https://github.com/inconshreveable/ngrok">https://github.com/inconshreveable/ngrok</a></p>
+<p><strong>6)配置化生成证书</strong><br>从根证书，到业务侧证书一键生成.<br><a target="_blank" rel="noopener" href="https://github.com/cloudflare/cfssl">https://github.com/cloudflare/cfssl</a></p>
+<p><strong>7)免费的证书获取工具</strong><br>基于 acme 协议，从 letsencrypt 生成免费的证书，有效期 1 年，可自动续期。<br><a target="_blank" rel="noopener" href="https://github.com/Neilpang/acme.sh">https://github.com/Neilpang/acme.sh</a></p>
+<p>8)开发环境管理工具，单机搭建可移植工具的利器。支持多种虚拟机后端。<br><strong>vagrant</strong>常被拿来同 docker 相比，值得拥有。<br><a target="_blank" rel="noopener" href="https://github.com/hashicorp/vagrant">https://github.com/hashicorp/vagrant</a></p>
+<p><strong>9)轻量级容器调度工具</strong><br>nomad 可以非常方便的管理容器和传统应用，相比 k8s 来说，简单不要太多.<br><a target="_blank" rel="noopener" href="https://github.com/hashicorp/nomad">https://github.com/hashicorp/nomad</a></p>
+<p><strong>10)敏感信息和密钥管理工具</strong><br><a target="_blank" rel="noopener" href="https://github.com/hashicorp/vault">https://github.com/hashicorp/vault</a></p>
+<p><strong>11)高度可配置化的 http 转发工具，基于 etcd 配置。</strong><br><a target="_blank" rel="noopener" href="https://github.com/gojek/weaver">https://github.com/gojek/weaver</a></p>
+<p><strong>12)进程监控工具 supervisor</strong><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/39b476e808d8">https://www.jianshu.com/p/39b476e808d8</a></p>
+<p><strong>13)基于</strong>procFile<strong>进程管理工具. 相比 supervisor 更加简单。</strong><br><a target="_blank" rel="noopener" href="https://github.com/ddollar/foreman">https://github.com/ddollar/foreman</a></p>
+<p><strong>14)基于 http，https，websocket 的</strong>调试代理工具<strong>，配置功能丰富。在线教育的 nohost web 调试工具，基于此开发.</strong><br><a target="_blank" rel="noopener" href="https://github.com/avwo/whistle">https://github.com/avwo/whistle</a></p>
+<p><strong>15)分布式调度工具</strong><br><a target="_blank" rel="noopener" href="https://github.com/shunfei/cronsun/blob/master/README_ZH.md">https://github.com/shunfei/cronsun/blob/master/README_ZH.md</a><br><a target="_blank" rel="noopener" href="https://github.com/ouqiang/gocron">https://github.com/ouqiang/gocron</a></p>
+<p><strong>16)自动化运维平台 Gaia</strong><br><a target="_blank" rel="noopener" href="https://github.com/gaia-pipeline/gaia">https://github.com/gaia-pipeline/gaia</a></p>
+<h2 id="三-常用网站"><a href="#三-常用网站" class="headerlink" title="三. 常用网站"></a><strong>三. 常用网站</strong></h2><p>go 百科全书: <a target="_blank" rel="noopener" href="https://awesome-go.com/">https://awesome-go.com/</a><br>json 解析: <a target="_blank" rel="noopener" href="https://www.json.cn/">https://www.json.cn/</a><br>出口 IP: <a target="_blank" rel="noopener" href="https://ipinfo.io/">https://ipinfo.io/</a><br>redis 命令: <a target="_blank" rel="noopener" href="http://doc.redisfans.com/">http://doc.redisfans.com/</a><br>ES 命令首页: <a target="_blank" rel="noopener" href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html">https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html</a><br>UrlEncode: <a target="_blank" rel="noopener" href="http://tool.chinaz.com/Tools/urlencode.aspx">http://tool.chinaz.com/Tools/urlencode.aspx</a><br>Base64: <a target="_blank" rel="noopener" href="https://tool.oschina.net/encrypt%3Ftype%3D3">https://tool.oschina.net/encrypt?type=3</a><br>Guid: <a target="_blank" rel="noopener" href="https://www.guidgen.com/">https://www.guidgen.com/</a><br>常用工具: <a target="_blank" rel="noopener" href="http://www.ofmonkey.com/">http://www.ofmonkey.com/</a></p>
+<h2 id="四-golang-常用库"><a href="#四-golang-常用库" class="headerlink" title="四. golang 常用库"></a><strong>四. golang 常用库</strong></h2><p><strong>日志</strong><br><a target="_blank" rel="noopener" href="https://github.com/Sirupsen/logrus">https://github.com/Sirupsen/logrus</a><br><a target="_blank" rel="noopener" href="https://github.com/uber-go/zap">https://github.com/uber-go/zap</a></p>
+<p><strong>配置</strong><br>兼容 json，toml，yaml，hcl 等格式的日志库.<br><a target="_blank" rel="noopener" href="https://github.com/spf13/viper">https://github.com/spf13/viper</a></p>
+<p><strong>存储</strong><br>mysql <a target="_blank" rel="noopener" href="https://github.com/go-xorm/xorm">https://github.com/go-xorm/xorm</a><br>es <a target="_blank" rel="noopener" href="https://github.com/elastic/elasticsearch">https://github.com/elastic/elasticsearch</a><br>redis <a target="_blank" rel="noopener" href="https://github.com/gomodule/redigo">https://github.com/gomodule/redigo</a><br>mongo <a target="_blank" rel="noopener" href="https://github.com/mongodb/mongo-go-driver">https://github.com/mongodb/mongo-go-driver</a><br>kafka <a target="_blank" rel="noopener" href="https://github.com/Shopify/sarama">https://github.com/Shopify/sarama</a></p>
+<p><strong>数据结构</strong><br><a target="_blank" rel="noopener" href="https://github.com/emirpasic/gods">https://github.com/emirpasic/gods</a></p>
+<p><strong>命令行</strong><br><a target="_blank" rel="noopener" href="https://github.com/spf13/cobra">https://github.com/spf13/cobra</a></p>
+<p><strong>框架</strong><br><a target="_blank" rel="noopener" href="https://github.com/grpc/grpc-go">https://github.com/grpc/grpc-go</a><br><a target="_blank" rel="noopener" href="https://github.com/gin-gonic/gin">https://github.com/gin-gonic/gin</a></p>
+<p><strong>并发</strong><br><a target="_blank" rel="noopener" href="https://github.com/Jeffail/tunny">https://github.com/Jeffail/tunny</a><br><a target="_blank" rel="noopener" href="https://github.com/benmanns/goworker">https://github.com/benmanns/goworker</a><br>现在我们框架在用的，虽然 star 不多，但是确实好用，当然还可以更好用.<br><a target="_blank" rel="noopener" href="https://github.com/rafaeldias/async">https://github.com/rafaeldias/async</a></p>
+<p><strong>工具</strong><br>定义了实用的判定类，以及针对结构体的校验逻辑，避免业务侧写复杂的代码.<br><a target="_blank" rel="noopener" href="https://github.com/asaskevich/govalidator">https://github.com/asaskevich/govalidator</a><br><a target="_blank" rel="noopener" href="https://github.com/bytedance/go-tagexpr">https://github.com/bytedance/go-tagexpr</a></p>
+<p>protobuf 文件动态解析的接口，可以实现反射相关的能力。<br><a target="_blank" rel="noopener" href="https://github.com/jhump/protoreflect">https://github.com/jhump/protoreflect</a></p>
+<p><strong>表达式引擎工具</strong><br><a target="_blank" rel="noopener" href="https://github.com/Knetic/govaluate">https://github.com/Knetic/govaluate</a><br><a target="_blank" rel="noopener" href="https://github.com/google/cel-go">https://github.com/google/cel-go</a></p>
+<p><strong>字符串处理</strong><br><a target="_blank" rel="noopener" href="https://github.com/huandu/xstrings">https://github.com/huandu/xstrings</a></p>
+<p><strong>ratelimit 工具</strong><br><a target="_blank" rel="noopener" href="https://github.com/uber-go/ratelimit">https://github.com/uber-go/ratelimit</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/chenchongg/article/details/85342086">https://blog.csdn.net/chenchongg/article/details/85342086</a><br><a target="_blank" rel="noopener" href="https://github.com/juju/ratelimit">https://github.com/juju/ratelimit</a></p>
+<p><strong>golang 熔断的库</strong><br>熔断除了考虑频率限制，还要考虑 qps，出错率等其他东西.<br><a target="_blank" rel="noopener" href="https://github.com/afex/hystrix-go">https://github.com/afex/hystrix-go</a><br><a target="_blank" rel="noopener" href="https://github.com/sony/gobreaker">https://github.com/sony/gobreaker</a></p>
+<p><strong>表格</strong><br><a target="_blank" rel="noopener" href="https://github.com/chenjiandongx/go-echarts">https://github.com/chenjiandongx/go-echarts</a></p>
+<p><strong>tail 工具库</strong><br><a target="_blank" rel="noopener" href="https://github.com/hpcloud/taglshi">https://github.com/hpcloud/taglshi</a></p>
+<h2 id="五-网络工具"><a href="#五-网络工具" class="headerlink" title="五. 网络工具"></a><strong>五. 网络工具</strong></h2><p><img src="/img/tools/nettools.jpg" alt="img"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Lennon</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://lennon.work/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85%E6%B1%87%E6%80%BB/">https://lennon.work/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85%E6%B1%87%E6%80%BB/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lennon.work" target="_blank">--小 · 崧 · 子--</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/golang/">golang</a><a class="post-meta__tags" href="/tags/%E5%B7%A5%E5%85%B7%E5%8C%85/">工具包</a><a class="post-meta__tags" href="/tags/%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/">调试工具</a><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E6%AF%94%E8%BE%83/">学习比较</a></div><div class="post_share"><div class="social-share" data-image="/img/tools/cover.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><img class="prev-cover" src="/img/tools/cover.jpg" onerror="onerror=null;src='/img/9s2b.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">常用工具包汇总一</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/11/leetcode/leetcodee43/"><img class="next-cover" src="/img/leetcode.png" onerror="onerror=null;src='/img/9s2b.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">43. 字符串相乘</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/04/11/beego源码解析/beego1/" title="beego源码学习一"><img class="cover" src="/img/tools/cover.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-11</div><div class="title">beego源码学习一</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="avatar"/><div class="author-info__name">Lennon</div><div class="author-info__description">每天成长一点点</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">16</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/lennon-liu"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">2021新年快乐</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7"><span class="toc-number">1.</span> <span class="toc-text">一. 开发工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7"><span class="toc-number">2.</span> <span class="toc-text">二.调试工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%AB%99"><span class="toc-number">3.</span> <span class="toc-text">三. 常用网站</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-golang-%E5%B8%B8%E7%94%A8%E5%BA%93"><span class="toc-number">4.</span> <span class="toc-text">四. golang 常用库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7"><span class="toc-number">5.</span> <span class="toc-text">五. 网络工具</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/04/11/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/search_domain_by_ip/" title="IP反查域名（一）"><img src="/img/search_domain_by_ip/cover.png" onerror="this.onerror=null;this.src='/img/9s2b.jpg'" alt="IP反查域名（一）"/></a><div class="content"><a class="title" href="/2021/04/11/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/search_domain_by_ip/" title="IP反查域名（一）">IP反查域名（一）</a><time datetime="2021-04-11T14:58:54.406Z" title="发表于 2021-04-11 22:58:54">2021-04-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/11/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/cpe/" title="Common Platform Enumeration(CPE)"><img src="/img/CPE/cover.png" onerror="this.onerror=null;this.src='/img/9s2b.jpg'" alt="Common Platform Enumeration(CPE)"/></a><div class="content"><a class="title" href="/2021/04/11/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/cpe/" title="Common Platform Enumeration(CPE)">Common Platform Enumeration(CPE)</a><time datetime="2021-04-11T14:58:54.405Z" title="发表于 2021-04-11 22:58:54">2021-04-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/11/%E6%9D%82%E8%B0%88/Hello%202021!/" title="Hello 2021!"><img src="/img/20210101/2021.png" onerror="this.onerror=null;this.src='/img/9s2b.jpg'" alt="Hello 2021!"/></a><div class="content"><a class="title" href="/2021/04/11/%E6%9D%82%E8%B0%88/Hello%202021!/" title="Hello 2021!">Hello 2021!</a><time datetime="2021-04-11T14:58:54.402Z" title="发表于 2021-04-11 22:58:54">2021-04-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="常用工具包汇总一"><img src="/img/tools/cover.jpg" onerror="this.onerror=null;this.src='/img/9s2b.jpg'" alt="常用工具包汇总一"/></a><div class="content"><a class="title" href="/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/" title="常用工具包汇总一">常用工具包汇总一</a><time datetime="2021-04-11T14:58:54.399Z" title="发表于 2021-04-11 22:58:54">2021-04-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85%E6%B1%87%E6%80%BB/" title="常用工具包汇总二"><img src="/img/tools/cover.jpg" onerror="this.onerror=null;this.src='/img/9s2b.jpg'" alt="常用工具包汇总二"/></a><div class="content"><a class="title" href="/2021/04/11/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85%E6%B1%87%E6%80%BB/" title="常用工具包汇总二">常用工具包汇总二</a><time datetime="2021-04-11T14:58:54.398Z" title="发表于 2021-04-11 22:58:54">2021-04-11</time></div></div></div></div></div></div></main><footer id="footer" style="background-color: transparent;"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Lennon</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/mouse_snow.min.js"></script><script src="https://cdn.jsdelivr.net/gh/sviptzk/HexoStaticFile@latest/Hexo/js/hideCategory.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" data-mobile="undefined" data-text="富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善" data-fontsize="15px" data-random="undefined" async="async"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/assets/wanko.model.json"},"display":{"superSample":2,"width":150,"height":300,"position":"right","hOffset":0,"vOffset":-20},"mobile":{"show":true,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.8},"log":false});</script></body></html>
