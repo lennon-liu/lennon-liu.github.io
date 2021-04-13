@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://lennon.work/2021/04/13/code/%E4%BB%A3%E7%A0%81%E5%8F%AF%E8%AF%BB%E6%80%A7/</loc>
+    
+    <lastmod>2021-04-13</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://lennon.work/music/index.html</loc>
     
     <lastmod>2021-04-13</lastmod>
@@ -325,6 +332,20 @@
     <priority>0.6</priority>
   </url>
   
+  <url>
+    <loc>https://lennon.work/tags/code%E5%8F%AF%E8%AF%BB%E6%80%A7/</loc>
+    <lastmod>2021-04-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://lennon.work/tags/%E8%A7%84%E8%8C%83/</loc>
+    <lastmod>2021-04-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
   
   <url>
@@ -357,6 +378,13 @@
   
   <url>
     <loc>https://lennon.work/categories/%E6%9D%82%E8%B0%88/</loc>
+    <lastmod>2021-04-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://lennon.work/categories/%E4%BB%A3%E7%A0%81%E5%8F%AF%E8%AF%BB%E6%80%A7%E8%A7%84%E8%8C%83/</loc>
     <lastmod>2021-04-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
