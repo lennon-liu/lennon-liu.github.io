@@ -6,7 +6,7 @@
   <link href="https://lennon.work/atom.xml" rel="self"/>
   
   <link href="https://lennon.work/"/>
-  <updated>2021-06-15T08:02:10.557Z</updated>
+  <updated>2021-07-04T08:12:04.440Z</updated>
   <id>https://lennon.work/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>13. 马数字转整数</title>
+    <link href="https://lennon.work/2021/07/04/leetcode/leetcode13/"/>
+    <id>https://lennon.work/2021/07/04/leetcode/leetcode13/</id>
+    <published>2021-07-04T08:06:27.437Z</published>
+    <updated>2021-07-04T08:12:04.440Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="leetcode题库-43-字符串相乘"><a href="#leetcode题库-43-字符串相乘" class="headerlink" title="leetcode题库 43. 字符串相乘"></a>leetcode题库 43. 字符串相乘</h3><hr><h4 id="原题信息"><a href="#原题信息" class="headerlink" title="原题信息"></a>原题信息</h4><hr><h5 id="原题链接"><a href="#原题链接" class="headerlink" title="原题链接:"></a>原题链接:</h5><blockquote><p><a href="https://leetcode-cn.com/problems/roman-to-integer/">https://leetcode-cn.com/problems/roman-to-integer/</a></p></blockquote><hr><h5 id="难度等级"><a href="#难度等级" class="headerlink" title="难度等级"></a>难度等级</h5><blockquote><p>中等</p></blockquote><hr><h5 id="原题描述"><a href="#原题描述" class="headerlink" title="原题描述"></a>原题描述</h5><blockquote><p>罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。</p><p>字符          数值<br>I             1<br>V             5<br>X             10<br>L             50<br>C             100<br>D             500<br>M             1000<br>例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</p><p>通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</p><p>I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。<br>X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。<br>C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。<br>给定一个罗马数字，将其转换成整数。输入确保在 1 到 3999 的范围内。</p></blockquote><p><img src="/img/lennon13/example.png" alt="example1"></p><hr><h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><hr><h5 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h5><blockquote></blockquote><hr><h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dojob</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> &amp;last, <span class="keyword">unsigned</span> <span class="keyword">int</span> &amp;sum, <span class="keyword">unsigned</span> <span class="keyword">int</span> tnew)</span> </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (tnew &gt; last) &#123;</span><br><span class="line">sum += (tnew - <span class="number">2</span> * last);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">sum += tnew;</span><br><span class="line">&#125;</span><br><span class="line">last = tnew;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">romanToInt</span><span class="params">(string s)</span> </span>&#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">unsigned</span> last = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">char</span> w : s) &#123;</span><br><span class="line"><span class="built_in"><span class="keyword">switch</span></span> (w) &#123;</span><br><span class="line"><span class="keyword">case</span> <span class="string">&#x27;M&#x27;</span>: <span class="built_in">dojob</span>(last, sum,<span class="number">1000</span>); <span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> <span class="string">&#x27;D&#x27;</span>: <span class="built_in">dojob</span>(last, sum, <span class="number">500</span>); <span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> <span class="string">&#x27;C&#x27;</span>: <span class="built_in">dojob</span>(last, sum, <span class="number">100</span>); <span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> <span class="string">&#x27;L&#x27;</span>: <span class="built_in">dojob</span>(last, sum, <span class="number">50</span>); <span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> <span class="string">&#x27;X&#x27;</span>: <span class="built_in">dojob</span>(last, sum, <span class="number">10</span>); <span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> <span class="string">&#x27;V&#x27;</span>: <span class="built_in">dojob</span>(last, sum, <span class="number">5</span>); <span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> <span class="string">&#x27;I&#x27;</span>: <span class="built_in">dojob</span>(last, sum, <span class="number">1</span>); <span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;what fuck!&quot;</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><hr><h5 id="代码链接"><a href="#代码链接" class="headerlink" title="代码链接"></a>代码链接</h5><p><a href="https://github.com/lennon-liu/leetcode/tree/main/lennon13">https://github.com/lennon-liu/leetcode/tree/main/lennon13</a></p><hr><h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p><img src="/img/lennon13/lennon13_re.png" alt="lennon2"></p><hr><h4 id="优化与总结"><a href="#优化与总结" class="headerlink" title="优化与总结"></a>优化与总结</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure><hr><blockquote><p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/add-two-numbers">https://leetcode-cn.com/problems/add-two-numbers</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p></blockquote>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h3 id=&quot;leetcode题库-43-字符串相乘&quot;&gt;&lt;a href=&quot;#leetcode题库-43-字符串相乘&quot; class=&quot;headerlink&quot; title=&quot;leetcode题库 43. 字符串相乘&quot;&gt;&lt;/a&gt;leetcode题库 43. 字符串相乘&lt;/h3&gt;&lt;hr</summary>
+      
+    
+    
+    
+    <category term="leetcode" scheme="https://lennon.work/categories/leetcode/"/>
+    
+    
+    <category term="简单难度" scheme="https://lennon.work/tags/%E7%AE%80%E5%8D%95%E9%9A%BE%E5%BA%A6/"/>
+    
+    <category term="c++实现" scheme="https://lennon.work/tags/c-%E5%AE%9E%E7%8E%B0/"/>
+    
+    <category term="字符串" scheme="https://lennon.work/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
+    
+  </entry>
   
   <entry>
     <title>C++学习 关联容器测试代码</title>
@@ -298,8 +326,8 @@
   
   <entry>
     <title>43. 字符串相乘</title>
-    <link href="https://lennon.work/2021/04/11/leetcode/leetcodee43/"/>
-    <id>https://lennon.work/2021/04/11/leetcode/leetcodee43/</id>
+    <link href="https://lennon.work/2021/04/11/leetcode/leetcode43/"/>
+    <id>https://lennon.work/2021/04/11/leetcode/leetcode43/</id>
     <published>2021-04-11T14:58:54.395Z</published>
     <updated>2021-01-23T08:48:08.847Z</updated>
     
@@ -403,9 +431,9 @@
     
     <category term="golang实现" scheme="https://lennon.work/tags/golang%E5%AE%9E%E7%8E%B0/"/>
     
-    <category term="字符串" scheme="https://lennon.work/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
-    
     <category term="简单难度" scheme="https://lennon.work/tags/%E7%AE%80%E5%8D%95%E9%9A%BE%E5%BA%A6/"/>
+    
+    <category term="字符串" scheme="https://lennon.work/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
     
   </entry>
   
@@ -544,40 +572,6 @@
     
     
     <category term="渗透测试" scheme="https://lennon.work/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>beego源码学习一</title>
-    <link href="https://lennon.work/2021/04/11/beego%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/beego1/"/>
-    <id>https://lennon.work/2021/04/11/beego%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/beego1/</id>
-    <published>2021-04-11T14:58:54.380Z</published>
-    <updated>2021-01-25T12:23:19.279Z</updated>
-    
-    <content type="html"><![CDATA[<hr><h3 id=""><a href="#" class="headerlink" title=""></a></h3><p>简介</p><p>快速开始</p><p>bee api  mybeegoapi</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">│  <span class="keyword">go</span>.mod</span><br><span class="line">│  <span class="keyword">go</span>.sum</span><br><span class="line">│  lastupdate.tmp</span><br><span class="line">│  main.<span class="keyword">go</span></span><br><span class="line">│  mybeegoapi.exe</span><br><span class="line">│  swagger.zip</span><br><span class="line">│</span><br><span class="line">├─conf</span><br><span class="line">│      app.conf</span><br><span class="line">│</span><br><span class="line">├─controllers</span><br><span class="line">│      object.<span class="keyword">go</span></span><br><span class="line">│      search.<span class="keyword">go</span></span><br><span class="line">│      user.<span class="keyword">go</span></span><br><span class="line">│</span><br><span class="line">├─models</span><br><span class="line">│      object.<span class="keyword">go</span></span><br><span class="line">│      search.<span class="keyword">go</span></span><br><span class="line">│      user.<span class="keyword">go</span></span><br><span class="line">│</span><br><span class="line">├─routers</span><br><span class="line">│      commentsRouter_.<span class="keyword">go</span></span><br><span class="line">│      commentsRouter_controllers.<span class="keyword">go</span></span><br><span class="line">│      router.<span class="keyword">go</span></span><br><span class="line">│</span><br><span class="line">├─swagger</span><br><span class="line">│      favicon<span class="number">-16</span>x16.png</span><br><span class="line">│      favicon<span class="number">-32</span>x32.png</span><br><span class="line">│      index.html</span><br><span class="line">│      oauth2-redirect.html</span><br><span class="line">│      swagger-ui-bundle.js</span><br><span class="line">│      swagger-ui-bundle.js.<span class="keyword">map</span></span><br><span class="line">│      swagger-ui-standalone-preset.js</span><br><span class="line">│      swagger-ui-standalone-preset.js.<span class="keyword">map</span></span><br><span class="line">│      swagger-ui.css</span><br><span class="line">│      swagger-ui.css.<span class="keyword">map</span></span><br><span class="line">│      swagger-ui.js</span><br><span class="line">│      swagger-ui.js.<span class="keyword">map</span></span><br><span class="line">│      swagger.json</span><br><span class="line">│      swagger.yml</span><br><span class="line">│</span><br><span class="line">└─tests</span><br><span class="line">   default_test.<span class="keyword">go</span></span><br><span class="line"></span><br></pre></td></tr></table></figure><p>​        </p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;hr&gt;
-&lt;h3 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;简介&lt;/p&gt;
-&lt;p&gt;快速开始&lt;/p&gt;
-&lt;p&gt;bee api  mybeegoapi&lt;/p&gt;
-&lt;figure class=&quot;highlight go</summary>
-      
-    
-    
-    
-    <category term="beego源码学习系列" scheme="https://lennon.work/categories/beego%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%B3%BB%E5%88%97/"/>
-    
-    
-    <category term="后端" scheme="https://lennon.work/tags/%E5%90%8E%E7%AB%AF/"/>
-    
-    <category term="golang" scheme="https://lennon.work/tags/golang/"/>
-    
-    <category term="web框架" scheme="https://lennon.work/tags/web%E6%A1%86%E6%9E%B6/"/>
-    
-    <category term="mvc架构" scheme="https://lennon.work/tags/mvc%E6%9E%B6%E6%9E%84/"/>
     
   </entry>
   
