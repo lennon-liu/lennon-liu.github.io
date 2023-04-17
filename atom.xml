@@ -6,7 +6,7 @@
   <link href="https://lennon.work/atom.xml" rel="self"/>
   
   <link href="https://lennon.work/"/>
-  <updated>2022-11-10T02:21:39.044Z</updated>
+  <updated>2023-04-17T02:14:16.714Z</updated>
   <id>https://lennon.work/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>linux docker打包应用服务程序</title>
+    <link href="https://lennon.work/2023/04/17/docker/docker%E6%89%93%E5%8C%85%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/"/>
+    <id>https://lennon.work/2023/04/17/docker/docker%E6%89%93%E5%8C%85%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/</id>
+    <published>2023-04-17T02:11:42.551Z</published>
+    <updated>2023-04-17T02:14:16.714Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="一、HTTP服务部署到Docker容器中创建一个Dockerfile"><a href="#一、HTTP服务部署到Docker容器中创建一个Dockerfile" class="headerlink" title="一、HTTP服务部署到Docker容器中创建一个Dockerfile"></a><strong>一、HTTP服务部署到Docker容器中创建一个Dockerfile</strong></h3><ol><li>选择基础镜像：选择一个适合您的应用程序的基础镜像，例如 Ubuntu 或 Alpine Linux，您可以在 Docker Hub 中找到许多可用的镜像。</li><li>安装必要的软件：安装 C++ 编译器和所需的库，例如 boost 和 OpenSSL。</li><li>将应用程序复制到容器中：将编译好的二进制文件或源代码复制到容器中。</li><li>暴露端口：使用 EXPOSE 命令将容器内的 HTTP 服务端口（例如 10522）暴露给外部。</li><li>设置启动命令：使用 CMD 命令设置容器启动时要运行的命令，例如启动您的 HTTP 服务。</li></ol><p>下面是一个简单的Dockerfile示例：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">FROM ubuntu:latest</span><br><span class="line"></span><br><span class="line"># 安装必要的软件</span><br><span class="line">RUN apt-get update &amp;&amp; \</span><br><span class="line">    apt-get install -y g++ \</span><br><span class="line">                       libboost-all-dev \</span><br><span class="line">                       openssl \</span><br><span class="line">                       libssl-dev</span><br><span class="line"></span><br><span class="line"># 创建一个工作目录并复制应用程序</span><br><span class="line">WORKDIR &#x2F;app</span><br><span class="line">COPY my-http-server &#x2F;app</span><br><span class="line"></span><br><span class="line"># 暴露端口</span><br><span class="line">EXPOSE 10522</span><br><span class="line"></span><br><span class="line"># 设置启动命令</span><br><span class="line">CMD [&quot;.&#x2F;my-http-server&quot;]</span><br></pre></td></tr></table></figure><p>将上述Dockerfile保存到您的项目目录中，并在终端中导航到该目录。然后，运行以下命令以构建Docker镜像：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t my-http-server .</span><br></pre></td></tr></table></figure><p>其中，“my-http-server”是您给镜像取的名称，最后的句点表示使用当前目录中的Dockerfile进行构建。</p><p>构建完成后，您可以运行以下命令以在容器中启动您的HTTP服务：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 10522:10522 my-http-server</span><br></pre></td></tr></table></figure><p>其中，“10522:10522”表示将容器内的端口10522映射到主机的10522端口，以便可以通过主机的IP地址和端口号访问您的HTTP服务。</p><h3 id="二、在-CentOS-容器中预先部署-C-HTTP-服务，并将其打包为-Docker-镜像，以便将其交付给用户使用"><a href="#二、在-CentOS-容器中预先部署-C-HTTP-服务，并将其打包为-Docker-镜像，以便将其交付给用户使用" class="headerlink" title="二、在 CentOS 容器中预先部署 C++ HTTP 服务，并将其打包为 Docker 镜像，以便将其交付给用户使用"></a><strong>二、在 CentOS 容器中预先部署 C++ HTTP 服务，并将其打包为 Docker 镜像，以便将其交付给用户使用</strong></h3><ol><li>创建 CentOS 容器并登录：使用以下命令创建一个基于 CentOS 的 Docker 容器并登录：</li></ol><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name my-centos-container centos:latest</span><br></pre></td></tr></table></figure><ol><li>在 CentOS 容器中安装必要的软件：在容器内使用 yum 包管理器安装 C++ 编译器和所需的库，例如 boost 和 OpenSSL：</li></ol><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y gcc-c++ boost boost-devel openssl-devel</span><br></pre></td></tr></table></figure><ol><li>复制应用程序到容器中：将编译好的二进制文件或源代码复制到容器中，可以使用 Docker 命令将应用程序复制到容器中：</li></ol><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp my-http-server my-centos-container:/app/</span><br></pre></td></tr></table></figure><p>其中，“my-http-server”是您的应用程序文件所在的路径。</p><ol><li>在容器中运行应用程序并测试：使用以下命令在容器中运行您的应用程序：</li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">perlCopy code</span><br><span class="line">docker exec -it my-centos-container &#x2F;app&#x2F;my-http-server</span><br></pre></td></tr></table></figure><p>确保您的 HTTP 服务在容器中正常运行，并且您可以使用 curl 命令或 Web 浏览器测试您的应用程序。</p><ol><li>保存容器状态为镜像：使用以下命令将容器保存为 Docker 镜像：</li></ol><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit my-centos-container my-http-server-image</span><br></pre></td></tr></table></figure><p>其中，“my-http-server-image”是您给镜像取的名称。</p><ol><li>导出 Docker 镜像文件：使用以下命令将 Docker 镜像导出为 tar 文件：</li></ol><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker save my-http-server-image &gt; my-http-server-image.tar</span><br></pre></td></tr></table></figure><ol><li>将 Docker 镜像交付给用户：将 tar 文件发送给用户，以便他们可以通过 Docker 命令加载您的应用程序：</li></ol><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load &lt; my-http-server-image.tar</span><br></pre></td></tr></table></figure><p>用户现在可以使用以下命令在本地 Docker 环境中运行您的应用程序：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 10522:10522 my-http-server-image /app/my-http-server</span><br></pre></td></tr></table></figure><p>其中，“10522:10522”表示将容器内的端口10522映射到主机的10522端口，以便可以通过主机的 IP 地址和端口号访问您的 HTTP 服务。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h3 id=&quot;一、HTTP服务部署到Docker容器中创建一个Dockerfile&quot;&gt;&lt;a href=&quot;#一、HTTP服务部署到Docker容器中创建一个Dockerfile&quot; class=&quot;headerlink&quot; title=&quot;一、HTTP服务部署到Docker容器中创建一个</summary>
+      
+    
+    
+    
+    <category term="linux" scheme="https://lennon.work/categories/linux/"/>
+    
+    
+    <category term="基础知识" scheme="https://lennon.work/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="打包" scheme="https://lennon.work/tags/%E6%89%93%E5%8C%85/"/>
+    
+    <category term="linux" scheme="https://lennon.work/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title>大神的gdb&amp;debug使用心得你学不学</title>
@@ -117,11 +145,11 @@
     <category term="C++" scheme="https://lennon.work/categories/C/"/>
     
     
+    <category term="c++" scheme="https://lennon.work/tags/c/"/>
+    
     <category term="基础知识" scheme="https://lennon.work/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     
     <category term="概念必备" scheme="https://lennon.work/tags/%E6%A6%82%E5%BF%B5%E5%BF%85%E5%A4%87/"/>
-    
-    <category term="c++" scheme="https://lennon.work/tags/c/"/>
     
   </entry>
   
@@ -145,11 +173,11 @@
     <category term="C++" scheme="https://lennon.work/categories/C/"/>
     
     
+    <category term="c++" scheme="https://lennon.work/tags/c/"/>
+    
     <category term="基础知识" scheme="https://lennon.work/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     
     <category term="概念必备" scheme="https://lennon.work/tags/%E6%A6%82%E5%BF%B5%E5%BF%85%E5%A4%87/"/>
-    
-    <category term="c++" scheme="https://lennon.work/tags/c/"/>
     
   </entry>
   
@@ -173,11 +201,11 @@
     <category term="C++" scheme="https://lennon.work/categories/C/"/>
     
     
+    <category term="c++" scheme="https://lennon.work/tags/c/"/>
+    
     <category term="基础知识" scheme="https://lennon.work/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     
     <category term="概念必备" scheme="https://lennon.work/tags/%E6%A6%82%E5%BF%B5%E5%BF%85%E5%A4%87/"/>
-    
-    <category term="c++" scheme="https://lennon.work/tags/c/"/>
     
   </entry>
   
@@ -542,35 +570,6 @@
     <category term="golang实现" scheme="https://lennon.work/tags/golang%E5%AE%9E%E7%8E%B0/"/>
     
     <category term="字符串" scheme="https://lennon.work/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>leetcode题库 2.两数相加</title>
-    <link href="https://lennon.work/2021/04/11/leetcode/leetcode02/"/>
-    <id>https://lennon.work/2021/04/11/leetcode/leetcode02/</id>
-    <published>2021-04-11T14:58:54.387Z</published>
-    <updated>2021-01-23T08:48:40.440Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="leetcode题库-2-两数相加"><a href="#leetcode题库-2-两数相加" class="headerlink" title="leetcode题库 2.两数相加"></a>leetcode题库 2.两数相加</h3><hr><h4 id="原题信息"><a href="#原题信息" class="headerlink" title="原题信息"></a>原题信息</h4><hr><h5 id="原题链接"><a href="#原题链接" class="headerlink" title="原题链接:"></a>原题链接:</h5><blockquote><p><a href="https://leetcode-cn.com/problems/add-two-numbers/">https://leetcode-cn.com/problems/add-two-numbers/</a></p></blockquote><hr><h5 id="难度等级"><a href="#难度等级" class="headerlink" title="难度等级"></a>难度等级</h5><blockquote><p>中等</p></blockquote><hr><h5 id="原题描述"><a href="#原题描述" class="headerlink" title="原题描述"></a>原题描述</h5><blockquote><p>给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。</p><p>请你将两个数相加，并以相同形式返回一个表示和的链表。</p><p>你可以假设除了数字 0 之外，这两个数都不会以 0 开头。</p><p>给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。</p><p>请你将两个数相加，并以相同形式返回一个表示和的链表。</p><p>你可以假设除了数字 0 之外，这两个数都不会以 0 开头。</p></blockquote><p><img src="/img/lennon2/example1.png" alt="example1"></p><blockquote><p>提示：<br>每个链表中的节点数在范围 [1, 100] 内<br>0 &lt;= Node.val &lt;= 9<br>题目数据保证列表表示的数字不含前导零</p></blockquote><hr><h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><hr><h5 id="构思"><a href="#构思" class="headerlink" title="构思"></a>构思</h5><blockquote></blockquote><hr><h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">addTwoNumbers</span><span class="params">(l1 *ListNode, l2 *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">listNode := <span class="built_in">new</span>(ListNode)</span><br><span class="line">temp := listNode</span><br><span class="line"><span class="keyword">if</span> l1 != <span class="literal">nil</span> &#123;</span><br><span class="line">temp.Val += l1.Val</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> l2 != <span class="literal">nil</span> &#123;</span><br><span class="line">temp.Val += l2.Val</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">tnextnode := <span class="built_in">new</span>(ListNode)</span><br><span class="line"><span class="keyword">if</span> temp.Val &gt; <span class="number">9</span> &#123;</span><br><span class="line">temp.Val = temp.Val - <span class="number">10</span></span><br><span class="line">tnextnode.Val = <span class="number">1</span></span><br><span class="line">temp.Next = tnextnode</span><br><span class="line">temp = tnextnode</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> l1.Next == <span class="literal">nil</span> &amp;&amp; l2.Next == <span class="literal">nil</span> &#123;</span><br><span class="line">temp.Next = <span class="literal">nil</span></span><br><span class="line"><span class="keyword">break</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">temp.Next = tnextnode</span><br><span class="line">temp = tnextnode</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> l1.Next != <span class="literal">nil</span> &#123;</span><br><span class="line">l1 = l1.Next</span><br><span class="line">temp.Val += l1.Val</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> l2.Next != <span class="literal">nil</span> &#123;</span><br><span class="line">l2 = l2.Next</span><br><span class="line">temp.Val += l2.Val</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> listNode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><hr><h5 id="代码链接"><a href="#代码链接" class="headerlink" title="代码链接"></a>代码链接</h5><blockquote><p><a href="https://github.com/lennon-liu/leetcode/tree/main/lennon2">https://github.com/lennon-liu/leetcode/tree/main/lennon2</a></p></blockquote><hr><h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><p><img src="/img/lennon2/lennon2.png" alt="lennon2"></p><hr><h4 id="优化与总结"><a href="#优化与总结" class="headerlink" title="优化与总结"></a>优化与总结</h4><blockquote></blockquote><hr><blockquote><p>来源：力扣（LeetCode）<br>链接：<a href="https://leetcode-cn.com/problems/add-two-numbers">https://leetcode-cn.com/problems/add-two-numbers</a><br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p></blockquote>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;leetcode题库-2-两数相加&quot;&gt;&lt;a href=&quot;#leetcode题库-2-两数相加&quot; class=&quot;headerlink&quot; title=&quot;leetcode题库 2.两数相加&quot;&gt;&lt;/a&gt;leetcode题库 2.两数相加&lt;/h3&gt;&lt;hr&gt;
-&lt;h4 id=&quot;</summary>
-      
-    
-    
-    
-    <category term="leetcode" scheme="https://lennon.work/categories/leetcode/"/>
-    
-    
-    <category term="中等难度" scheme="https://lennon.work/tags/%E4%B8%AD%E7%AD%89%E9%9A%BE%E5%BA%A6/"/>
-    
-    <category term="golang实现" scheme="https://lennon.work/tags/golang%E5%AE%9E%E7%8E%B0/"/>
-    
-    <category term="链表" scheme="https://lennon.work/tags/%E9%93%BE%E8%A1%A8/"/>
     
   </entry>
   
